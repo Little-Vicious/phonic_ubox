@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AprbTClientsGroupMapper" >
+  <resultMap id="ClientsGroupMap" type="com.zzxy.ssm.po.AprbTClientsGroup" >
+    <id column="GROUP_NO" property="groupNo" jdbcType="VARCHAR" />
+    <result column="CUST_NO" property="custNo" jdbcType="VARCHAR" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+    <result column="CUST_SEX" property="custSex" jdbcType="VARCHAR" />
+    <result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+    <result column="CARD_INT" property="cardInt" jdbcType="VARCHAR" />
+    <result column="CUST_INT" property="custInt" jdbcType="VARCHAR" />
+    <result column="CONTACT_STEP" property="contactStep" jdbcType="VARCHAR" />
+    <result column="NOTICE_NAME" property="noticeName" jdbcType="VARCHAR" />
+    <result column="NOTICE_TYPE" property="noticeType" jdbcType="VARCHAR" />
+    <result column="FOLLOW_STATUS" property="followStatus" jdbcType="VARCHAR" />
+    <result column="FINISH_DATE" property="finishDate" jdbcType="TIMESTAMP" />
+    <result column="CUST_GROUP" property="custGroup" jdbcType="VARCHAR" />
+    <result column="NOTICE_STATE" property="noticeState" jdbcType="VARCHAR" />
+    <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="ClientsGroup_Column_List" >
+    GROUP_NO, CUST_NO, CUST_NAME, CUST_SEX, CARD_TYPE, CARD_INT, CUST_INT, CONTACT_STEP, 
+    NOTICE_NAME, NOTICE_TYPE, FOLLOW_STATUS, FINISH_DATE, CUST_GROUP, NOTICE_STATE, COMMENTS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ClientsGroupMap" parameterType="java.lang.String" >
+    select 
+    <include refid="ClientsGroup_Column_List" />
+    from aprb_t_clients_group
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from aprb_t_clients_group
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.zzxy.ssm.po.AprbTClientsGroup" >
+    insert into aprb_t_clients_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupNo != null" >
+        GROUP_NO,
+      </if>
+      <if test="custNo != null" >
+        CUST_NO,
+      </if>
+      <if test="custName != null" >
+        CUST_NAME,
+      </if>
+      <if test="custSex != null" >
+        CUST_SEX,
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE,
+      </if>
+      <if test="cardInt != null" >
+        CARD_INT,
+      </if>
+      <if test="custInt != null" >
+        CUST_INT,
+      </if>
+      <if test="contactStep != null" >
+        CONTACT_STEP,
+      </if>
+      <if test="noticeName != null" >
+        NOTICE_NAME,
+      </if>
+      <if test="noticeType != null" >
+        NOTICE_TYPE,
+      </if>
+      <if test="followStatus != null" >
+        FOLLOW_STATUS,
+      </if>
+      <if test="finishDate != null" >
+        FINISH_DATE,
+      </if>
+      <if test="custGroup != null" >
+        CUST_GROUP,
+      </if>
+      <if test="noticeState != null" >
+        NOTICE_STATE,
+      </if>
+      <if test="comments != null" >
+        COMMENTS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupNo != null" >
+        #{groupNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custNo != null" >
+        #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="custSex != null" >
+        #{custSex,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardInt != null" >
+        #{cardInt,jdbcType=VARCHAR},
+      </if>
+      <if test="custInt != null" >
+        #{custInt,jdbcType=VARCHAR},
+      </if>
+      <if test="contactStep != null" >
+        #{contactStep,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeName != null" >
+        #{noticeName,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeType != null" >
+        #{noticeType,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        #{followStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="finishDate != null" >
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="custGroup != null" >
+        #{custGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeState != null" >
+        #{noticeState,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzxy.ssm.po.AprbTClientsGroup" >
+    update aprb_t_clients_group
+    <set >
+      <if test="custNo != null" >
+        CUST_NO = #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        CUST_NAME = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="custSex != null" >
+        CUST_SEX = #{custSex,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardInt != null" >
+        CARD_INT = #{cardInt,jdbcType=VARCHAR},
+      </if>
+      <if test="custInt != null" >
+        CUST_INT = #{custInt,jdbcType=VARCHAR},
+      </if>
+      <if test="contactStep != null" >
+        CONTACT_STEP = #{contactStep,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeName != null" >
+        NOTICE_NAME = #{noticeName,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeType != null" >
+        NOTICE_TYPE = #{noticeType,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        FOLLOW_STATUS = #{followStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="finishDate != null" >
+        FINISH_DATE = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="custGroup != null" >
+        CUST_GROUP = #{custGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeState != null" >
+        NOTICE_STATE = #{noticeState,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        COMMENTS = #{comments,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

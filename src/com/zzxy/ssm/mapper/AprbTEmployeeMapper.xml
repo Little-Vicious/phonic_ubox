@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AprbTEmployeeMapper" >
+  <resultMap id="EmployeeMap" type="com.zzxy.ssm.po.AprbTEmployee" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Employee_Column_List" >
+    ID, ACCOUNT, PASSWORD, USERNAME
+  </sql>
+  
+  <!-- 查询员工信息条件拼接语句 -->
+  <sql id="Query_Employee_Where">
+     <if test="aprbTEmployeeCustom != null">
+        <if test="aprbTEmployeeCustom.account !=null and aprbTEmployeeCustom.account != ''">
+          and account = #{ACCOUNT,jdbcType=VARCHAR}
+        </if>
+     </if>
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="EmployeeMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Employee_Column_List" />
+    from aprb_t_employee
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getEmployeeByVO" resultMap="EmployeeMap" parameterType="com.zzxy.ssm.po.AprbTEmployeeQueryVO">
+    select 
+    <include refid="Employee_Column_List" />
+    from aprb_t_employee
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_Employee_Where"/>
+    </trim>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from aprb_t_employee
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.zzxy.ssm.po.AprbTEmployee" >
+    insert into aprb_t_employee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="account != null" >
+        ACCOUNT,
+      </if>
+      <if test="password != null" >
+        PASSWORD,
+      </if>
+      <if test="username != null" >
+        USERNAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzxy.ssm.po.AprbTEmployee" >
+    update aprb_t_employee
+    <set >
+      <if test="account != null" >
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

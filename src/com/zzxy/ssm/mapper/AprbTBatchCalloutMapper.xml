@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AprbTBatchCalloutMapper" >
+  <!-- 群组外呼字段映射Map -->
+  <resultMap id="BatchCalloutMap" type="com.zzxy.ssm.po.AprbTBatchCallout" >
+    <id column="BATCH_NO" property="batchNo" jdbcType="VARCHAR" />
+    <result column="INSERT_DATETIME" property="insertDatetime" jdbcType="TIMESTAMP" />
+    <result column="PROJECT_NAME" property="projectName" jdbcType="VARCHAR" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="BATCH_TYPE" property="batchType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 单个外呼字段映射Map -->
+  <resultMap id="SingleCalloutMap" type="com.zzxy.ssm.po.AprbTSingleCallout" >
+    <id column="CALL_NO" property="callNo" jdbcType="VARCHAR" />
+    <result column="BATCH_NO" property="batchNo" jdbcType="VARCHAR" />
+    <result column="PROJECT_TYPE" property="projectType" jdbcType="VARCHAR" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="DURATION" property="duration" jdbcType="INTEGER" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+    <result column="CUST_NUMBER" property="custNumber" jdbcType="VARCHAR" />
+    <result column="CUST_TYPE" property="custType" jdbcType="VARCHAR" />
+    <result column="CUST_NO" property="custNo" jdbcType="VARCHAR" />
+    <result column="DISPOSE_TIME" property="disposeTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="RESULT" property="result" jdbcType="VARCHAR" />
+    <result column="CALLOUT_TIMES" property="calloutTimes" jdbcType="INTEGER" />
+    <result column="CALLOUT_STATUS" property="calloutStatus" jdbcType="INTEGER" />
+    <result column="ALLOT_STATUS" property="allotStatus" jdbcType="INTEGER" />
+    <result column="BELONG_ORG" property="belongOrg" jdbcType="VARCHAR" />
+    <result column="CUST_CHANNELS" property="custChannels" jdbcType="VARCHAR" />
+    <result column="AREA" property="area" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 群组外呼字段列表 -->
+  <sql id="BatchCallout_Column_List" >
+    BATCH_NO, INSERT_DATETIME, PROJECT_NAME, START_TIME, END_TIME, BATCH_TYPE
+  </sql>
+  
+  <!-- 群组外呼包装字段列表 -->
+  <sql id="BatchCalloutCustom_Column_List" >
+       batch.BATCH_NO AS batchNo,
+       batch.INSERT_DATETIME AS insertDatetime,
+       batch.PROJECT_NAME AS projectName,
+       batch.START_TIME AS startTime,
+       batch.END_TIME AS endTime,
+       batch.BATCH_TYPE AS batchType,
+       (select count(CALL_NO)
+          from APRB_T_SINGLE_CALLOUT single
+         where single.batch_no = batch.BATCH_NO) AS countCallout,
+       (select count(CALL_NO)
+          from aprb_t_single_callout single
+         where single.BATCH_NO = batch.BATCH_NO
+           and single.CALLOUT_STATUS > 0) AS countFinish,
+       (select count(CALL_NO)
+          from APRB_T_SINGLE_CALLOUT single
+         where single.BATCH_NO = batch.BATCH_NO
+           and single.CALLOUT_STATUS = 0) AS countUnfinish,
+       (select count(CALL_NO)
+          from APRB_T_SINGLE_CALLOUT single
+         where single.BATCH_NO = batch.BATCH_NO
+           and single.CALLOUT_STATUS = 2) AS countEffective
+  </sql>
+  
+  <!-- 单个外呼的字段列表 -->
+  <sql id="SingleCallout_Column_List" >
+    CALL_NO, BATCH_NO, PROJECT_TYPE, START_TIME, DURATION, CUST_NAME, CUST_NUMBER, CUST_TYPE, 
+    CUST_NO, DISPOSE_TIME, LAST_UPDATE_TIME, RESULT, CALLOUT_TIMES, CALLOUT_STATUS, ALLOT_STATUS, 
+    BELONG_ORG, CUST_CHANNELS, AREA
+  </sql>
+  
+  <!-- 群组外呼查询条件拼接 -->
+  <sql id="Query_BatchCallout_Where">
+    <if test="aprbTBatchCalloutCustom != null">
+      <if test="aprbTBatchCalloutCustom.batchType != null and aprbTBatchCalloutCustom.batchType != ''">
+        and BATCH_TYPE = #{aprbTBatchCalloutCustom.batchType,jdbcType=VARCHAR}
+      </if>
+    </if>
+  </sql>
+  
+  <!-- 单个外呼查询条件拼接 -->
+  <sql id="Query_SingleCallout_Where">
+    <if test="aprbTSingleCalloutCustom != null">
+      <if test="aprbTSingleCalloutCustom.batchNo != null and aprbTSingleCalloutCustom.batchNo != ''">
+        and BATCH_NO = #{aprbTSingleCalloutCustom.batchNo,jdbcType=VARCHAR}
+      </if>
+      <if test="aprbTSingleCalloutCustom.custNo != null and aprbTSingleCalloutCustom.custNo != ''">
+        and cust_No = #{aprbTSingleCalloutCustom.custNo,jdbcType=VARCHAR}
+      </if>
+    </if>
+  </sql>
+  
+  <!-- 获取群组外呼列表 -->
+  <select id="listBatchCallOut" resultMap="BatchCalloutMap" parameterType="com.zzxy.ssm.po.AprbTBatchCalloutQueryVO">
+      select 
+      <include refid="BatchCallout_Column_List"/>
+      from 
+        aprb_t_batch_callout
+      <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	      <include refid="Query_BatchCallout_Where"/>
+	    </trim>
+      
+  </select>
+  
+   <!-- 获取群组外呼包装列表 -->
+  <select id="listBatchCallOutCustom" resultType="com.zzxy.ssm.po.AprbTBatchCalloutCustom" parameterType="com.zzxy.ssm.po.AprbTBatchCalloutQueryVO">
+      SELECT 
+      <include refid="BatchCalloutCustom_Column_List"/>
+      FROM 
+        APRB_T_BATCH_CALLOUT batch
+      <trim prefix="WHERE" prefixOverrides="AND |OR ">
+        <include refid="Query_BatchCallout_Where"/>
+      </trim>
+      
+  </select>
+  
+  <!-- 根据群组No和客户No获取单个外呼信息 -->
+  <select id="getCallOutByBatchnodAndCustno" resultMap="SingleCalloutMap" parameterType="com.zzxy.ssm.po.AprbTSingleCalloutQueryVO">
+    select 
+     <include refid="SingleCallout_Column_List"/>
+    from 
+      aprb_t_single_callout
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_SingleCallout_Where"/>
+    </trim>
+  </select>
+  
+  <!-- 通过主键获取群组外呼信息 -->
+  <select id="getBatchCalloutByPrimaryKey" resultMap="BatchCalloutMap" parameterType="java.lang.String" >
+    select 
+    <include refid="BatchCallout_Column_List" />
+    from aprb_t_batch_callout
+    where BATCH_NO = #{batchNo,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from aprb_t_batch_callout
+    where BATCH_NO = #{batchNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertBatchCallOut" parameterType="com.zzxy.ssm.po.AprbTBatchCallout" >
+    <selectKey keyProperty="batchNo" order="BEFORE" resultType="java.lang.String">
+      select upper(replace(UUID(),'-',''))
+    </selectKey>
+    insert into aprb_t_batch_callout
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="batchNo != null" >
+        BATCH_NO,
+      </if>
+      <if test="insertDatetime != null" >
+        INSERT_DATETIME,
+      </if>
+      <if test="projectName != null" >
+        PROJECT_NAME,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="endTime != null" >
+        END_TIME,
+      </if>
+      <if test="batchType != null" >
+        BATCH_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="batchNo != null" >
+        #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDatetime != null" >
+        #{insertDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="batchType != null" >
+        #{batchType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzxy.ssm.po.AprbTBatchCallout" >
+    update aprb_t_batch_callout
+    <set >
+      <if test="insertDatetime != null" >
+        INSERT_DATETIME = #{insertDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectName != null" >
+        PROJECT_NAME = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="batchType != null" >
+        BATCH_TYPE = #{batchType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where BATCH_NO = #{batchNo,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 新增单个外呼信息 -->
+  <insert id="insertSingleCallout" parameterType="com.zzxy.ssm.po.AprbTSingleCalloutCustom">
+    <selectKey keyProperty="callNo" order="BEFORE" resultType="java.lang.String">
+      select upper(replace(UUID(),'-',''))
+    </selectKey>
+    insert into aprb_t_single_callout
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="callNo != null" >
+        CALL_NO,
+      </if>
+      <if test="batchNo != null" >
+        BATCH_NO,
+      </if>
+      <if test="projectType != null" >
+        PROJECT_TYPE,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="duration != null" >
+        DURATION,
+      </if>
+      <if test="custName != null" >
+        CUST_NAME,
+      </if>
+      <if test="custNumber != null" >
+        CUST_NUMBER,
+      </if>
+      <if test="custType != null" >
+        CUST_TYPE,
+      </if>
+      <if test="custNo != null" >
+        CUST_NO,
+      </if>
+      <if test="disposeTime != null" >
+        DISPOSE_TIME,
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="result != null" >
+        RESULT,
+      </if>
+      <if test="calloutTimes != null" >
+        CALLOUT_TIMES,
+      </if>
+      <if test="calloutStatus != null" >
+        CALLOUT_STATUS,
+      </if>
+      <if test="allotStatus != null" >
+        ALLOT_STATUS,
+      </if>
+      <if test="belongOrg != null" >
+        BELONG_ORG,
+      </if>
+      <if test="custChannels != null" >
+        CUST_CHANNELS,
+      </if>
+      <if test="area != null" >
+        AREA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="callNo != null" >
+        #{callNo,jdbcType=VARCHAR},
+      </if>
+      <if test="batchNo != null" >
+        #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        #{projectType,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="duration != null" >
+        #{duration,jdbcType=INTEGER},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="custNumber != null" >
+        #{custNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="custType != null" >
+        #{custType,jdbcType=VARCHAR},
+      </if>
+      <if test="custNo != null" >
+        #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeTime != null" >
+        #{disposeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="calloutTimes != null" >
+        #{calloutTimes,jdbcType=INTEGER},
+      </if>
+      <if test="calloutStatus != null" >
+        #{calloutStatus,jdbcType=INTEGER},
+      </if>
+      <if test="allotStatus != null" >
+        #{allotStatus,jdbcType=INTEGER},
+      </if>
+      <if test="belongOrg != null" >
+        #{belongOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="custChannels != null" >
+        #{custChannels,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 通过查询包装类获取单个外呼列表 -->
+  <select id="listSingleCallOutByBatchNo" resultMap="SingleCalloutMap" parameterType="com.zzxy.ssm.po.AprbTSingleCalloutQueryVO" >
+    select 
+    <include refid="SingleCallout_Column_List" />
+    from aprb_t_single_callout
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_SingleCallout_Where"/>
+    </trim>
+  </select>
+  
+  <!-- 根据主键获取群组外呼包装类 -->
+  <select id="getBatchCalloutCustomByPrimaryKey" resultType="com.zzxy.ssm.po.AprbTBatchCalloutCustom" parameterType="java.lang.String">
+    SELECT 
+      <include refid="BatchCalloutCustom_Column_List"/>
+      FROM 
+        APRB_T_BATCH_CALLOUT batch
+      WHERE BATCH_NO = #{batchNo,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 更新单个外呼信息 -->
+  <update id="updateSingleCallout" parameterType="com.zzxy.ssm.po.AprbTSingleCallout" >
+    update aprb_t_single_callout
+    <set >
+      <if test="batchNo != null" >
+        BATCH_NO = #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        PROJECT_TYPE = #{projectType,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="duration != null" >
+        DURATION = #{duration,jdbcType=INTEGER},
+      </if>
+      <if test="custName != null" >
+        CUST_NAME = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="custNumber != null" >
+        CUST_NUMBER = #{custNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="custType != null" >
+        CUST_TYPE = #{custType,jdbcType=VARCHAR},
+      </if>
+      <if test="custNo != null" >
+        CUST_NO = #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeTime != null" >
+        DISPOSE_TIME = #{disposeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null" >
+        RESULT = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="calloutTimes != null" >
+        CALLOUT_TIMES = #{calloutTimes,jdbcType=INTEGER},
+      </if>
+      <if test="calloutStatus != null" >
+        CALLOUT_STATUS = #{calloutStatus,jdbcType=INTEGER},
+      </if>
+      <if test="allotStatus != null" >
+        ALLOT_STATUS = #{allotStatus,jdbcType=INTEGER},
+      </if>
+      <if test="belongOrg != null" >
+        BELONG_ORG = #{belongOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="custChannels != null" >
+        CUST_CHANNELS = #{custChannels,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        AREA = #{area,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CALL_NO = #{callNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

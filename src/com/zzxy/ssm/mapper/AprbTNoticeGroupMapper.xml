@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AprbTNoticeGroupMapper" >
+  <resultMap id="NoticeGroupMap" type="com.zzxy.ssm.po.AprbTNoticeGroup" >
+    <id column="GROUP_NO" property="groupNo" jdbcType="VARCHAR" />
+    <result column="CUST_NO" property="custNo" jdbcType="VARCHAR" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+    <result column="NOTICE_NAME" property="noticeName" jdbcType="VARCHAR" />
+    <result column="NOTICE_TYPE" property="noticeType" jdbcType="VARCHAR" />
+    <result column="FOLLOW_STATUS" property="followStatus" jdbcType="VARCHAR" />
+    <result column="FINISH_DATE" property="finishDate" jdbcType="TIMESTAMP" />
+    <result column="CUST_GROUP" property="custGroup" jdbcType="VARCHAR" />
+    <result column="CUST_NUMBER" property="custNumber" jdbcType="VARCHAR" />
+    <result column="NOTICE_STATE" property="noticeState" jdbcType="VARCHAR" />
+    <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="NoticeGroup_Column_List" >
+    GROUP_NO, CUST_NO, CUST_NAME, NOTICE_NAME, NOTICE_TYPE, FOLLOW_STATUS, FINISH_DATE, 
+    CUST_GROUP, CUST_NUMBER, NOTICE_STATE, COMMENTS
+  </sql>
+  
+  <!-- 消息提醒群组查询条件语句 -->
+  <sql id="Query_NoticeGroup_Where">
+    <if test="aprbTNoticeGroupCustom != null">
+      <if test="aprbTNoticeGroupCustom.custNo != null and aprbTNoticeGroupCustom.custNo != ''">
+        <bind name="patternCustNo" value="'%'+_parameter.aprbTNoticeGroupCustom.custNo+'%'" />
+        and CUST_NO like #{patternCustNo}
+      </if>
+      <if test="aprbTNoticeGroupCustom.custName != null and aprbTNoticeGroupCustom.custName != ''">
+        <bind name="patternCustName" value="'%'+_parameter.aprbTNoticeGroupCustom.custName+'%'" />
+        and CUST_NAME like #{patternCustName}
+      </if>
+      <if test="aprbTNoticeGroupCustom.noticeName != null and aprbTNoticeGroupCustom.noticeName != ''">
+        <bind name="patternNoticeName" value="'%'+_parameter.aprbTNoticeGroupCustom.noticeName+'%'" />
+        and NOTICE_NAME like #{patternNoticeName}
+      </if>
+      <if test="aprbTNoticeGroupCustom.noticeType != null and aprbTNoticeGroupCustom.noticeType != ''">
+        and NOTICE_TYPE = #{aprbTNoticeGroupCustom.noticeType,jdbcType=VARCHAR}
+      </if>
+      <if test="aprbTNoticeGroupCustom.followStatus != null and aprbTNoticeGroupCustom.followStatus != ''">
+        and FOLLOW_STATUS = #{aprbTNoticeGroupCustom.followStatus,jdbcType=VARCHAR}
+      </if>
+    </if>
+  </sql>
+  
+  <!-- 根据查询条件获取提醒群组列表 -->
+  <select id="listCustNoticeGroups" resultMap="NoticeGroupMap" parameterType="com.zzxy.ssm.po.AprbTNoticeGroupQueryVO">
+    select 
+    <include refid="NoticeGroup_Column_List" />
+    from aprb_t_notice_group
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_NoticeGroup_Where"/>
+    </trim>
+  </select>
+  
+  <!-- 根据主键获取提醒消息群组信息 -->
+  <select id="getNoticeGroupByPrimaryKey" resultMap="NoticeGroupMap" parameterType="java.lang.String" >
+    select 
+    <include refid="NoticeGroup_Column_List" />
+    from aprb_t_notice_group
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from aprb_t_notice_group
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 新增提醒群组 -->
+  <insert id="insertNoticeGroup" parameterType="com.zzxy.ssm.po.AprbTNoticeGroup" >
+    <selectKey keyProperty="groupNo" order="BEFORE" resultType="java.lang.String">
+      select UPPER(REPLACE(UUID(),'-',''))
+    </selectKey>
+    insert into aprb_t_notice_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupNo != null" >
+        GROUP_NO,
+      </if>
+      <if test="custNo != null" >
+        CUST_NO,
+      </if>
+      <if test="custName != null" >
+        CUST_NAME,
+      </if>
+      <if test="noticeName != null" >
+        NOTICE_NAME,
+      </if>
+      <if test="noticeType != null" >
+        NOTICE_TYPE,
+      </if>
+      <if test="followStatus != null" >
+        FOLLOW_STATUS,
+      </if>
+      <if test="finishDate != null" >
+        FINISH_DATE,
+      </if>
+      <if test="custGroup != null" >
+        CUST_GROUP,
+      </if>
+      <if test="custNumber != null" >
+        CUST_NUMBER,
+      </if>
+      <if test="noticeState != null" >
+        NOTICE_STATE,
+      </if>
+      <if test="comments != null" >
+        COMMENTS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupNo != null" >
+        #{groupNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custNo != null" >
+        #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeName != null" >
+        #{noticeName,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeType != null" >
+        #{noticeType,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        #{followStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="finishDate != null" >
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="custGroup != null" >
+        #{custGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="custNumber != null" >
+        #{custNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeState != null" >
+        #{noticeState,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新提醒群组 -->
+  <update id="updateNoticeGroup" parameterType="com.zzxy.ssm.po.AprbTNoticeGroup" >
+    update aprb_t_notice_group
+    <set >
+      <if test="custNo != null" >
+        CUST_NO = #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        CUST_NAME = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeName != null" >
+        NOTICE_NAME = #{noticeName,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeType != null" >
+        NOTICE_TYPE = #{noticeType,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        FOLLOW_STATUS = #{followStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="finishDate != null" >
+        FINISH_DATE = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="custGroup != null" >
+        CUST_GROUP = #{custGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="custNumber != null" >
+        CUST_NUMBER = #{custNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeState != null" >
+        NOTICE_STATE = #{noticeState,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        COMMENTS = #{comments,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

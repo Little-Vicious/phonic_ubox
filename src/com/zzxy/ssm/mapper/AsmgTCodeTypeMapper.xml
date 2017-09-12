@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AsmgTCodeTypeMapper" >
+  <!-- CodeTypey映射Map -->
+  <resultMap id="CodeTypeMap" type="com.zzxy.ssm.po.AsmgTCodeType" >
+    <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="DATA_SRC" property="dataSrc" jdbcType="VARCHAR" />
+    <result column="INSERT_USER" property="insertUser" jdbcType="VARCHAR" />
+    <result column="INSERT_USER_NAME" property="insertUserName" jdbcType="VARCHAR" />
+    <result column="CREATOR_ORG_NO" property="creatorOrgNo" jdbcType="VARCHAR" />
+    <result column="CREATOR_ORG" property="creatorOrg" jdbcType="VARCHAR" />
+    <result column="INSERT_IPADDRESS" property="insertIpaddress" jdbcType="VARCHAR" />
+    <result column="INSERT_DATETIME" property="insertDatetime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_USER_NAME" property="updateUserName" jdbcType="VARCHAR" />
+    <result column="MODIFER_ORG_NO" property="modiferOrgNo" jdbcType="VARCHAR" />
+    <result column="MODIFER_ORG" property="modiferOrg" jdbcType="VARCHAR" />
+    <result column="UPDATE_IPADDRESS" property="updateIpaddress" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATETIME" property="updateDatetime" jdbcType="TIMESTAMP" />
+    <result column="IS_DEL" property="isDel" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- CodeInfo映射Map -->
+  <resultMap id="CodeInfoMap" type="com.zzxy.ssm.po.AsmgTCodeInfo" >
+    <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+    <result column="CODE_NAME" property="codeName" jdbcType="VARCHAR" />
+    <result column="CODE_VALUE" property="codeValue" jdbcType="VARCHAR" />
+    <result column="LOCAL" property="local" jdbcType="VARCHAR" />
+    <result column="INDEX_NO" property="indexNo" jdbcType="INTEGER" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="DATA_SRC" property="dataSrc" jdbcType="VARCHAR" />
+    <result column="INSERT_USER" property="insertUser" jdbcType="VARCHAR" />
+    <result column="INSERT_USER_NAME" property="insertUserName" jdbcType="VARCHAR" />
+    <result column="CREATOR_ORG_NO" property="creatorOrgNo" jdbcType="VARCHAR" />
+    <result column="CREATOR_ORG" property="creatorOrg" jdbcType="VARCHAR" />
+    <result column="INSERT_IPADDRESS" property="insertIpaddress" jdbcType="VARCHAR" />
+    <result column="INSERT_DATETIME" property="insertDatetime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_USER_NAME" property="updateUserName" jdbcType="VARCHAR" />
+    <result column="MODIFER_ORG_NO" property="modiferOrgNo" jdbcType="VARCHAR" />
+    <result column="MODIFER_ORG" property="modiferOrg" jdbcType="VARCHAR" />
+    <result column="UPDATE_IPADDRESS" property="updateIpaddress" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATETIME" property="updateDatetime" jdbcType="TIMESTAMP" />
+    <result column="IS_DEL" property="isDel" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- CodeType字段列表 -->
+  <sql id="CodeType_Column_List" >
+    TYPE_CODE, TYPE_NAME, REMARK, DATA_SRC, INSERT_USER, INSERT_USER_NAME, 
+    CREATOR_ORG_NO, CREATOR_ORG, INSERT_IPADDRESS, INSERT_DATETIME, UPDATE_USER, UPDATE_USER_NAME, 
+    MODIFER_ORG_NO, MODIFER_ORG, UPDATE_IPADDRESS, UPDATE_DATETIME, IS_DEL
+  </sql>
+  
+  <!-- CodeType查询拼接条件 -->
+  <sql id="CodeType_Where_Clause">
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+     <if test="asmgTCodeTypeCustom != null">
+       <if test="asmgTCodeTypeCustom.typeCode != null and asmgTCodeTypeCustom.typeCode != ''">
+        AND ASMG_T_CODE_TYPE.TYPE_CODE = #{asmgTCodeTypeCustom.typeCode}
+       </if>
+     </if>
+   </trim>
+  </sql>
+  
+  <!-- 查询码值类型列表 -->
+  <select id="listAsmgTCodeType" resultMap="CodeTypeMap" parameterType="com.zzxy.ssm.po.AsmgTCodeTypeQueryVO">
+    select 
+    <include refid="CodeType_Column_List" />
+    from asmg_t_code_type
+    <include refid="CodeType_Where_Clause"/>
+  </select>
+  
+  <!-- 根据主键查询码值类型信息 -->
+  <select id="getCodeTypeByPrimaryKey" resultMap="CodeTypeMap" parameterType="java.lang.String" >
+    select 
+    <include refid="CodeType_Column_List" />
+    from asmg_t_code_type
+    where TYPE_CODE = #{typeCode,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 增加码值类型信息 -->
+  <insert id="insertCodeType" parameterType="com.zzxy.ssm.po.AsmgTCodeType" >
+    insert into asmg_t_code_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="typeCode != null" >
+        TYPE_CODE,
+      </if>
+      <if test="typeName != null" >
+        TYPE_NAME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="dataSrc != null" >
+        DATA_SRC,
+      </if>
+      <if test="insertUser != null" >
+        INSERT_USER,
+      </if>
+      <if test="insertUserName != null" >
+        INSERT_USER_NAME,
+      </if>
+      <if test="creatorOrgNo != null" >
+        CREATOR_ORG_NO,
+      </if>
+      <if test="creatorOrg != null" >
+        CREATOR_ORG,
+      </if>
+      <if test="insertIpaddress != null" >
+        INSERT_IPADDRESS,
+      </if>
+      <if test="insertDatetime != null" >
+        INSERT_DATETIME,
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER,
+      </if>
+      <if test="updateUserName != null" >
+        UPDATE_USER_NAME,
+      </if>
+      <if test="modiferOrgNo != null" >
+        MODIFER_ORG_NO,
+      </if>
+      <if test="modiferOrg != null" >
+        MODIFER_ORG,
+      </if>
+      <if test="updateIpaddress != null" >
+        UPDATE_IPADDRESS,
+      </if>
+      <if test="updateDatetime != null" >
+        UPDATE_DATETIME,
+      </if>
+      <if test="isDel != null" >
+        IS_DEL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="typeCode != null" >
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSrc != null" >
+        #{dataSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="insertUser != null" >
+        #{insertUser,jdbcType=VARCHAR},
+      </if>
+      <if test="insertUserName != null" >
+        #{insertUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorOrgNo != null" >
+        #{creatorOrgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorOrg != null" >
+        #{creatorOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="insertIpaddress != null" >
+        #{insertIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDatetime != null" >
+        #{insertDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null" >
+        #{updateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modiferOrgNo != null" >
+        #{modiferOrgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modiferOrg != null" >
+        #{modiferOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="updateIpaddress != null" >
+        #{updateIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDatetime != null" >
+        #{updateDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 修改码值类型列表 -->
+  <update id="updateCodeType" parameterType="com.zzxy.ssm.po.AsmgTCodeType" >
+    update asmg_t_code_type
+    <set >
+      <if test="typeName != null" >
+        TYPE_NAME = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSrc != null" >
+        DATA_SRC = #{dataSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="insertUser != null" >
+        INSERT_USER = #{insertUser,jdbcType=VARCHAR},
+      </if>
+      <if test="insertUserName != null" >
+        INSERT_USER_NAME = #{insertUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorOrgNo != null" >
+        CREATOR_ORG_NO = #{creatorOrgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorOrg != null" >
+        CREATOR_ORG = #{creatorOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="insertIpaddress != null" >
+        INSERT_IPADDRESS = #{insertIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDatetime != null" >
+        INSERT_DATETIME = #{insertDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null" >
+        UPDATE_USER_NAME = #{updateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modiferOrgNo != null" >
+        MODIFER_ORG_NO = #{modiferOrgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modiferOrg != null" >
+        MODIFER_ORG = #{modiferOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="updateIpaddress != null" >
+        UPDATE_IPADDRESS = #{updateIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDatetime != null" >
+        UPDATE_DATETIME = #{updateDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        IS_DEL = #{isDel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TYPE_CODE = #{typeCode,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 删除码值类型 -->
+  <delete id="deleteCodeType" parameterType="java.lang.String" >
+    delete from asmg_t_code_type
+    where TYPE_CODE = #{typeCode,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- CodeInfo字段列表 -->
+  <sql id="CodeInfo_Column_List" >
+    TYPE_CODE, CODE_NAME, CODE_VALUE, LOCAL, INDEX_NO, REMARK, DATA_SRC, INSERT_USER, 
+    INSERT_USER_NAME, CREATOR_ORG_NO, CREATOR_ORG, INSERT_IPADDRESS, INSERT_DATETIME, 
+    UPDATE_USER, UPDATE_USER_NAME, MODIFER_ORG_NO, MODIFER_ORG, UPDATE_IPADDRESS, UPDATE_DATETIME, 
+    IS_DEL
+  </sql>
+  
+  <!-- CodeInfo查询条件拼接 -->
+  <sql id="CodeInfo_Where_Clause">
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+     <if test="asmgTCodeInfoCustom != null">
+       <if test="asmgTCodeInfoCustom.typeCode != null and asmgTCodeInfoCustom.typeCode != ''">
+        and ASMG_T_CODE_INFO.TYPE_CODE = #{asmgTCodeInfoCustom.typeCode}
+       </if>
+     </if>
+   </trim>
+  </sql>
+  
+  <!-- 根据码值类型获取码值列表 -->
+  <select id="listCodeInfoByTypeCode" resultMap="CodeInfoMap" parameterType="com.zzxy.ssm.po.AsmgTCodeInfoQueryVO">
+    select
+    <include refid="CodeInfo_Column_List"/>
+    from ASMG_T_CODE_INFO
+    <include refid="CodeInfo_Where_Clause"/>
+  </select>
+  
+  <!-- 根据主键获取码值信息 -->
+  <select id="getCodeInfoByPrimaryKey" resultMap="CodeInfoMap" parameterType="java.lang.String" >
+    select 
+    <include refid="CodeInfo_Column_List" />
+    from asmg_t_code_info
+    where CODE_VALUE = #{codeValue,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 新增码值信息 -->
+  <insert id="insertCodeInfo" parameterType="com.zzxy.ssm.po.AsmgTCodeInfo" >
+    insert into asmg_t_code_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="typeCode != null" >
+        TYPE_CODE,
+      </if>
+      <if test="codeName != null" >
+        CODE_NAME,
+      </if>
+      <if test="codeValue != null" >
+        CODE_VALUE,
+      </if>
+      <if test="local != null" >
+        LOCAL,
+      </if>
+      <if test="indexNo != null" >
+        INDEX_NO,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="dataSrc != null" >
+        DATA_SRC,
+      </if>
+      <if test="insertUser != null" >
+        INSERT_USER,
+      </if>
+      <if test="insertUserName != null" >
+        INSERT_USER_NAME,
+      </if>
+      <if test="creatorOrgNo != null" >
+        CREATOR_ORG_NO,
+      </if>
+      <if test="creatorOrg != null" >
+        CREATOR_ORG,
+      </if>
+      <if test="insertIpaddress != null" >
+        INSERT_IPADDRESS,
+      </if>
+      <if test="insertDatetime != null" >
+        INSERT_DATETIME,
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER,
+      </if>
+      <if test="updateUserName != null" >
+        UPDATE_USER_NAME,
+      </if>
+      <if test="modiferOrgNo != null" >
+        MODIFER_ORG_NO,
+      </if>
+      <if test="modiferOrg != null" >
+        MODIFER_ORG,
+      </if>
+      <if test="updateIpaddress != null" >
+        UPDATE_IPADDRESS,
+      </if>
+      <if test="updateDatetime != null" >
+        UPDATE_DATETIME,
+      </if>
+      <if test="isDel != null" >
+        IS_DEL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="typeCode != null" >
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null" >
+        #{codeName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeValue != null" >
+        #{codeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="local != null" >
+        #{local,jdbcType=VARCHAR},
+      </if>
+      <if test="indexNo != null" >
+        #{indexNo,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSrc != null" >
+        #{dataSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="insertUser != null" >
+        #{insertUser,jdbcType=VARCHAR},
+      </if>
+      <if test="insertUserName != null" >
+        #{insertUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorOrgNo != null" >
+        #{creatorOrgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorOrg != null" >
+        #{creatorOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="insertIpaddress != null" >
+        #{insertIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDatetime != null" >
+        #{insertDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null" >
+        #{updateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modiferOrgNo != null" >
+        #{modiferOrgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modiferOrg != null" >
+        #{modiferOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="updateIpaddress != null" >
+        #{updateIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDatetime != null" >
+        #{updateDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新码值信息 -->
+  <update id="updateCodeInfo" parameterType="com.zzxy.ssm.po.AsmgTCodeInfo" >
+    update asmg_t_code_info
+    <set >
+      <if test="typeCode != null" >
+        TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null" >
+        CODE_NAME = #{codeName,jdbcType=VARCHAR},
+      </if>
+      <if test="local != null" >
+        LOCAL = #{local,jdbcType=VARCHAR},
+      </if>
+      <if test="indexNo != null" >
+        INDEX_NO = #{indexNo,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSrc != null" >
+        DATA_SRC = #{dataSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="insertUser != null" >
+        INSERT_USER = #{insertUser,jdbcType=VARCHAR},
+      </if>
+      <if test="insertUserName != null" >
+        INSERT_USER_NAME = #{insertUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorOrgNo != null" >
+        CREATOR_ORG_NO = #{creatorOrgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorOrg != null" >
+        CREATOR_ORG = #{creatorOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="insertIpaddress != null" >
+        INSERT_IPADDRESS = #{insertIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDatetime != null" >
+        INSERT_DATETIME = #{insertDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null" >
+        UPDATE_USER_NAME = #{updateUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modiferOrgNo != null" >
+        MODIFER_ORG_NO = #{modiferOrgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modiferOrg != null" >
+        MODIFER_ORG = #{modiferOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="updateIpaddress != null" >
+        UPDATE_IPADDRESS = #{updateIpaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDatetime != null" >
+        UPDATE_DATETIME = #{updateDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        IS_DEL = #{isDel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CODE_VALUE = #{codeValue,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 删除码值信息 -->
+  <delete id="deleteCodeInfo" parameterType="java.lang.String" >
+    delete from asmg_t_code_info
+    where CODE_VALUE = #{codeValue,jdbcType=VARCHAR}
+  </delete>
+  
+</mapper>

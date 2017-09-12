@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AprbTOppoGroupMapper" >
+
+  <!-- 商机群组表映射Map -->
+  <resultMap id="OppoGroupMap" type="com.zzxy.ssm.po.AprbTOppoGroup" >
+    <id column="GROUP_NO" property="groupNo" jdbcType="VARCHAR" />
+    <result column="CUST_NO" property="custNo" jdbcType="VARCHAR" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+    <result column="OPPO_NAME" property="oppoName" jdbcType="VARCHAR" />
+    <result column="OPPO_TYPE" property="oppoType" jdbcType="VARCHAR" />
+    <result column="FOLLOW_STATUS" property="followStatus" jdbcType="VARCHAR" />
+    <result column="FINISH_DATE" property="finishDate" jdbcType="TIMESTAMP" />
+    <result column="CUST_GROUP" property="custGroup" jdbcType="VARCHAR" />
+    <result column="CUST_NUMBER" property="custNumber" jdbcType="VARCHAR" />
+    <result column="OPPO_STATE" property="oppoState" jdbcType="VARCHAR" />
+    <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 商机群组表字段列表 -->
+  <sql id="OppoGroup_Column_List" >
+    GROUP_NO, CUST_NO, CUST_NAME, OPPO_NAME, OPPO_TYPE, FOLLOW_STATUS, FINISH_DATE, CUST_GROUP, 
+    CUST_NUMBER, OPPO_STATE, COMMENTS
+  </sql>
+  
+  <!-- 查询商机群组条件拼接SQL -->
+  <sql id="Query_OppoGroup_Where">
+    <if test="aprbTOppoGroupCustom != null">
+      <if test="aprbTOppoGroupCustom.custNo != null and aprbTOppoGroupCustom.custNo != ''">
+        <bind name="patternCustNo" value="'%'+_parameter.aprbTOppoGroupCustom.custNo+'%'" />
+        and CUST_NO like #{patternCustNo}
+      </if>
+      <if test="aprbTOppoGroupCustom.custName != null and aprbTOppoGroupCustom.custName != ''">
+        <bind name="patternCustName" value="'%'+_parameter.aprbTOppoGroupCustom.custName+'%'" />
+        and CUST_NAME like #{patternCustName}
+      </if>
+      <if test="aprbTOppoGroupCustom.oppoName != null and aprbTOppoGroupCustom.oppoName != ''">
+        <bind name="patternOppoName" value="'%'+_parameter.aprbTOppoGroupCustom.oppoName+'%'" />
+        and OPPO_NAME like #{patternOppoName}
+      </if>
+      <if test="aprbTOppoGroupCustom.oppoType != null and aprbTOppoGroupCustom.oppoType != ''">
+        and OPPO_TYPE = #{aprbTOppoGroupCustom.oppoType,jdbcType=VARCHAR}
+      </if>
+      <if test="aprbTOppoGroupCustom.followStatus != null and aprbTOppoGroupCustom.followStatus != ''">
+        and FOLLOW_STATUS = #{aprbTOppoGroupCustom.followStatus,jdbcType=VARCHAR}
+      </if>
+    </if>
+  </sql>
+  
+  <!-- 获取商机群组列表 -->
+  <select id="listOppoGroups" resultMap="OppoGroupMap" parameterType="com.zzxy.ssm.po.AprbTOppoGroupQueryVO">
+    select 
+    <include refid="OppoGroup_Column_List" />
+    from 
+      aprb_t_oppo_group
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_OppoGroup_Where"/>
+    </trim>
+  </select>
+  
+  <!-- 根据主键获取商机活动信息 -->
+  <select id="getOppoGroupByPrimaryKey" resultMap="OppoGroupMap" parameterType="java.lang.String" >
+    select 
+    <include refid="OppoGroup_Column_List" />
+    from 
+      aprb_t_oppo_group
+     where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from aprb_t_oppo_group
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 新增商机群组信息 -->
+  <insert id="insertOppoGroup" parameterType="com.zzxy.ssm.po.AprbTOppoGroup" >
+    <selectKey keyProperty="groupNo" order="BEFORE" resultType="java.lang.String">
+      select UPPER(REPLACE(UUID(),'-',''))
+    </selectKey>
+    insert into aprb_t_oppo_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupNo != null" >
+        GROUP_NO,
+      </if>
+      <if test="custNo != null" >
+        CUST_NO,
+      </if>
+      <if test="custName != null" >
+        CUST_NAME,
+      </if>
+      <if test="oppoName != null" >
+        OPPO_NAME,
+      </if>
+      <if test="oppoType != null" >
+        OPPO_TYPE,
+      </if>
+      <if test="followStatus != null" >
+        FOLLOW_STATUS,
+      </if>
+      <if test="finishDate != null" >
+        FINISH_DATE,
+      </if>
+      <if test="custGroup != null" >
+        CUST_GROUP,
+      </if>
+      <if test="custNumber != null" >
+        CUST_NUMBER,
+      </if>
+      <if test="oppoState != null" >
+        OPPO_STATE,
+      </if>
+      <if test="comments != null" >
+        COMMENTS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupNo != null" >
+        #{groupNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custNo != null" >
+        #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="oppoName != null" >
+        #{oppoName,jdbcType=VARCHAR},
+      </if>
+      <if test="oppoType != null" >
+        #{oppoType,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        #{followStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="finishDate != null" >
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="custGroup != null" >
+        #{custGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="custNumber != null" >
+        #{custNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="oppoState != null" >
+        #{oppoState,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzxy.ssm.po.AprbTOppoGroup" >
+    update aprb_t_oppo_group
+    <set >
+      <if test="custNo != null" >
+        CUST_NO = #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        CUST_NAME = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="oppoName != null" >
+        OPPO_NAME = #{oppoName,jdbcType=VARCHAR},
+      </if>
+      <if test="oppoType != null" >
+        OPPO_TYPE = #{oppoType,jdbcType=VARCHAR},
+      </if>
+      <if test="followStatus != null" >
+        FOLLOW_STATUS = #{followStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="finishDate != null" >
+        FINISH_DATE = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="custGroup != null" >
+        CUST_GROUP = #{custGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="custNumber != null" >
+        CUST_NUMBER = #{custNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="oppoState != null" >
+        OPPO_STATE = #{oppoState,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        COMMENTS = #{comments,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

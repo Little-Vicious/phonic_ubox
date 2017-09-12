@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AprbTActivityGroupMapper" >
+  <resultMap id="ActivityGroupMap" type="com.zzxy.ssm.po.AprbTActivityGroup" >
+    <id column="GROUP_NO" property="groupNo" jdbcType="VARCHAR" />
+    <result column="CUST_NO" property="custNo" jdbcType="VARCHAR" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+    <result column="ACTIVITY_NAME" property="activityName" jdbcType="VARCHAR" />
+    <result column="ACTIVITY_TYPE" property="activityType" jdbcType="VARCHAR" />
+    <result column="WORKDAY" property="workday" jdbcType="TIMESTAMP" />
+    <result column="CONTACT_STEP" property="contactStep" jdbcType="VARCHAR" />
+    <result column="SOURCE_CHANNELS" property="sourceChannels" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="ActivityGroup_Column_List" >
+    GROUP_NO, CUST_NO, CUST_NAME, ACTIVITY_NAME, ACTIVITY_TYPE, WORKDAY, CONTACT_STEP, 
+    SOURCE_CHANNELS, CREATER, STATUS, COMMENTS
+  </sql>
+  
+  <sql id="Query_ActivityGroup_Where">
+    <if test="activityGroupCustom != null">
+      <if test="activityGroupCustom.custNo != null and activityGroupCustom.custNo != ''">
+        <bind name="patternCustNo" value="'%'+_parameter.activityGroupCustom.custNo+'%'" />
+        and CUST_NO like #{patternCustNo}
+      </if>
+      <if test="activityGroupCustom.custName != null and activityGroupCustom.custName != ''">
+        <bind name="patternCustName" value="'%'+_parameter.activityGroupCustom.custName+'%'" />
+        and CUST_NAME like #{patternCustName}
+      </if>
+      <if test="activityGroupCustom.activityName != null and activityGroupCustom.activityName != ''">
+        <bind name="patternActivityName" value="'%'+_parameter.activityGroupCustom.activityName+'%'" />
+        and ACTIVITY_NAME like #{patternActivityName}
+      </if>
+      <if test="activityGroupCustom.activityType != null and activityGroupCustom.activityType != ''">
+        and ACTIVITY_TYPE = #{activityGroupCustom.activityType,jdbcType=VARCHAR}
+      </if>
+      <if test="activityGroupCustom.contactStep != null and activityGroupCustom.contactStep != ''">
+        and CONTACT_STEP = #{activityGroupCustom.contactStep,jdbcType=VARCHAR}
+      </if>
+    </if>
+  </sql>
+  
+  <!-- 活动量群组列表 -->
+  <select id="listCustActivityGroups" resultMap="ActivityGroupMap" parameterType="com.zzxy.ssm.po.AprbTActivityGroupQueryVO" >
+    select 
+    <include refid="ActivityGroup_Column_List" />
+    from
+      aprb_t_activity_group
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_ActivityGroup_Where"/>
+    </trim>
+  </select>
+  
+  <!-- 根据主键获取活动量群组信息 -->
+  <select id="getActivityGroupByPrimaryKey" resultMap="ActivityGroupMap" parameterType="java.lang.String" >
+    select 
+    <include refid="ActivityGroup_Column_List" />
+    from aprb_t_activity_group
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 删除活动量群组 -->
+  <delete id="deleteActivityGroup" parameterType="java.lang.String" >
+    delete from aprb_t_activity_group
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 增加活动量群组信息 -->
+  <insert id="insertActivityGroup" parameterType="com.zzxy.ssm.po.AprbTActivityGroup" >
+    <selectKey keyProperty="groupNo" order="BEFORE" resultType="java.lang.String">
+      select upper(replace(UUID(),'-',''))
+    </selectKey>
+    insert into aprb_t_activity_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupNo != null" >
+        GROUP_NO,
+      </if>
+      <if test="custNo != null" >
+        CUST_NO,
+      </if>
+      <if test="custName != null" >
+        CUST_NAME,
+      </if>
+      <if test="activityName != null" >
+        ACTIVITY_NAME,
+      </if>
+      <if test="activityType != null" >
+        ACTIVITY_TYPE,
+      </if>
+      <if test="workday != null" >
+        WORKDAY,
+      </if>
+      <if test="contactStep != null" >
+        CONTACT_STEP,
+      </if>
+      <if test="sourceChannels != null" >
+        SOURCE_CHANNELS,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="comments != null" >
+        COMMENTS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupNo != null" >
+        #{groupNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custNo != null" >
+        #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityName != null" >
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        #{activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="workday != null" >
+        #{workday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contactStep != null" >
+        #{contactStep,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceChannels != null" >
+        #{sourceChannels,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新活动量群组信息 -->
+  <update id="updateActivityGroup" parameterType="com.zzxy.ssm.po.AprbTActivityGroup" >
+    update aprb_t_activity_group
+    <set >
+      <if test="custNo != null" >
+        CUST_NO = #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        CUST_NAME = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityName != null" >
+        ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        ACTIVITY_TYPE = #{activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="workday != null" >
+        WORKDAY = #{workday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contactStep != null" >
+        CONTACT_STEP = #{contactStep,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceChannels != null" >
+        SOURCE_CHANNELS = #{sourceChannels,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="comments != null" >
+        COMMENTS = #{comments,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where GROUP_NO = #{groupNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

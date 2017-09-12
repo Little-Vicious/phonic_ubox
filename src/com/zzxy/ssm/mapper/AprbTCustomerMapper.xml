@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AprbTCustomerMapper" >
+  <!-- 客户表映射Map -->
+  <resultMap id="CustomerMap" type="com.zzxy.ssm.po.AprbTCustomer" >
+    <id column="CUST_NO" property="custNo" jdbcType="VARCHAR" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 客户电话映射表 -->
+  <resultMap id="CustomerNumberMap" type="com.zzxy.ssm.po.AprbTCustomerNumber" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CUST_NO" property="custNo" jdbcType="VARCHAR" />
+    <result column="CUST_NUMBER" property="custNumber" jdbcType="VARCHAR" />
+    <result column="MAIN" property="main" jdbcType="INTEGER" />
+  </resultMap>
+  
+  
+  
+  <!-- 客户信息表字段 -->
+  <sql id="Customer_Column_List" >
+    CUST_NO, CUST_NAME
+  </sql>
+  
+  <!-- 客户电话号码表字段 -->
+  <sql id="CustomerNumber_Column_List" >
+    ID, CUST_NO, CUST_NUMBER, MAIN
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="CustomerMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Customer_Column_List" />
+    from aprb_t_customer
+    where CUST_NO = #{custNo,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from aprb_t_customer
+    where CUST_NO = #{custNo,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  <insert id="insertSelective" parameterType="com.zzxy.ssm.po.AprbTCustomer" >
+    insert into aprb_t_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="custNo != null" >
+        CUST_NO,
+      </if>
+      <if test="custName != null" >
+        CUST_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="custNo != null" >
+        #{custNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzxy.ssm.po.AprbTCustomer" >
+    update aprb_t_customer
+    <set >
+      <if test="custName != null" >
+        CUST_NAME = #{custName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CUST_NO = #{custNo,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 客户信息列表 -->
+  <select id="listCustomer" resultMap="CustomerMap">
+    select 
+    <include refid="Customer_Column_List"/>
+    from  aprb_t_customer
+  </select>
+  
+  <!-- 获取客户的主要电话号码 -->
+  <select id="getMainCustNumber" resultMap="CustomerNumberMap" parameterType="java.lang.String">
+    select 
+    <include refid="CustomerNumber_Column_List"/>
+    from aprb_t_customer_number
+    where  CUST_NO = #{custNo,jdbcType=VARCHAR}
+    and MAIN = 1
+  </select>
+  
+  <!-- 获取客户的非主要联系方式列表 -->
+  <select id="listCustNumbers" resultMap="CustomerNumberMap" parameterType="java.lang.String">
+    select 
+    <include refid="CustomerNumber_Column_List"/>
+    from aprb_t_customer_number
+    where CUST_NO = #{custNo,jdbcType=VARCHAR}
+    and MAIN = 0
+  </select>
+  
+  <!-- 按是否主要获取客户电话列表 -->
+  <select id="listCustomerNumberByCustnoAndMain" resultType="com.zzxy.ssm.po.AprbTCustomerNumberCustom" parameterType="com.zzxy.ssm.po.AprbTCustomerNumberQueryVO">
+    SELECT
+        aprb_t_customer_number.ID,
+        aprb_t_customer_number.CUST_NO,
+        aprb_t_customer_number.CUST_NUMBER,
+        aprb_t_customer_number.MAIN
+    FROM
+        aprb_t_customer_number
+   where aprb_t_customer_number.CUST_NO = #{customernumberCustom.custNo,jdbcType=VARCHAR}
+    AND aprb_t_customer_number.MAIN = #{customernumberCustom.main,jdbcType=INTEGER}
+  </select>
+  
+</mapper>
