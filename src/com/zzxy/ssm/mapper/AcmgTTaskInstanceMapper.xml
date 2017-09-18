@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AcmgTTaskInstanceMapper" >
+  <resultMap id="InstanceMap" type="com.zzxy.ssm.po.AcmgTTaskInstance" >
+    <id column="INSTANCE_ID" property="instanceId" jdbcType="VARCHAR" />
+    <result column="INSTANCE_TYPE" property="instanceType" jdbcType="VARCHAR" />
+    <result column="INSTANCE_NAME" property="instanceName" jdbcType="VARCHAR" />
+    <result column="INSTANCE_FLAG" property="instanceFlag" jdbcType="VARCHAR" />
+    <result column="INSTANCE_STATUS" property="instanceStatus" jdbcType="INTEGER" />
+    <result column="INSTANCE_TIME" property="instanceTime" jdbcType="TIMESTAMP" />
+    <result column="INSTANCE_START_TIME" property="instanceStartTime" jdbcType="TIMESTAMP" />
+    <result column="INSTANCE_END_TIME" property="instanceEndTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Instance_Column_List" >
+    INSTANCE_ID, INSTANCE_TYPE, INSTANCE_NAME, INSTANCE_FLAG, INSTANCE_STATUS, INSTANCE_TIME, 
+    INSTANCE_START_TIME, INSTANCE_END_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="InstanceMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Instance_Column_List" />
+    from acmg_t_task_instance
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据查询VO获取实例信息 -->
+  <select id="getInstanceByVO" resultMap="InstanceMap" parameterType="com.zzxy.ssm.po.AcmgTTaskInstanceQueryVO" >
+    select 
+    <include refid="Instance_Column_List" />
+    from acmg_t_task_instance
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from acmg_t_task_instance
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
+    insert into acmg_t_task_instance (INSTANCE_ID, INSTANCE_TYPE, INSTANCE_NAME, 
+      INSTANCE_FLAG, INSTANCE_STATUS, INSTANCE_TIME, 
+      INSTANCE_START_TIME, INSTANCE_END_TIME)
+    values (#{instanceId,jdbcType=VARCHAR}, #{instanceType,jdbcType=VARCHAR}, #{instanceName,jdbcType=VARCHAR}, 
+      #{instanceFlag,jdbcType=VARCHAR}, #{instanceStatus,jdbcType=INTEGER}, #{instanceTime,jdbcType=TIMESTAMP}, 
+      #{instanceStartTime,jdbcType=TIMESTAMP}, #{instanceEndTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
+    insert into acmg_t_task_instance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="instanceId != null" >
+        INSTANCE_ID,
+      </if>
+      <if test="instanceType != null" >
+        INSTANCE_TYPE,
+      </if>
+      <if test="instanceName != null" >
+        INSTANCE_NAME,
+      </if>
+      <if test="instanceFlag != null" >
+        INSTANCE_FLAG,
+      </if>
+      <if test="instanceStatus != null" >
+        INSTANCE_STATUS,
+      </if>
+      <if test="instanceTime != null" >
+        INSTANCE_TIME,
+      </if>
+      <if test="instanceStartTime != null" >
+        INSTANCE_START_TIME,
+      </if>
+      <if test="instanceEndTime != null" >
+        INSTANCE_END_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="instanceId != null" >
+        #{instanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceType != null" >
+        #{instanceType,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceName != null" >
+        #{instanceName,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceFlag != null" >
+        #{instanceFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceStatus != null" >
+        #{instanceStatus,jdbcType=INTEGER},
+      </if>
+      <if test="instanceTime != null" >
+        #{instanceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instanceStartTime != null" >
+        #{instanceStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instanceEndTime != null" >
+        #{instanceEndTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
+    update acmg_t_task_instance
+    <set >
+      <if test="instanceType != null" >
+        INSTANCE_TYPE = #{instanceType,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceName != null" >
+        INSTANCE_NAME = #{instanceName,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceFlag != null" >
+        INSTANCE_FLAG = #{instanceFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceStatus != null" >
+        INSTANCE_STATUS = #{instanceStatus,jdbcType=INTEGER},
+      </if>
+      <if test="instanceTime != null" >
+        INSTANCE_TIME = #{instanceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instanceStartTime != null" >
+        INSTANCE_START_TIME = #{instanceStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instanceEndTime != null" >
+        INSTANCE_END_TIME = #{instanceEndTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
+    update acmg_t_task_instance
+    set INSTANCE_TYPE = #{instanceType,jdbcType=VARCHAR},
+      INSTANCE_NAME = #{instanceName,jdbcType=VARCHAR},
+      INSTANCE_FLAG = #{instanceFlag,jdbcType=VARCHAR},
+      INSTANCE_STATUS = #{instanceStatus,jdbcType=INTEGER},
+      INSTANCE_TIME = #{instanceTime,jdbcType=TIMESTAMP},
+      INSTANCE_START_TIME = #{instanceStartTime,jdbcType=TIMESTAMP},
+      INSTANCE_END_TIME = #{instanceEndTime,jdbcType=TIMESTAMP}
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </update>
+</mapper>
