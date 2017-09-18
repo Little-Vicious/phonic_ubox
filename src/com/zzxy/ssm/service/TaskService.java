@@ -5,6 +5,7 @@ import java.util.List;
 import com.zzxy.ssm.po.AcmgTTask;
 import com.zzxy.ssm.po.AcmgTTaskCustom;
 import com.zzxy.ssm.po.AcmgTTaskInstance;
+import com.zzxy.ssm.po.AcmgTTaskInstanceCustom;
 import com.zzxy.ssm.po.AcmgTTaskQueryVO;
 import com.zzxy.ssm.po.AcmgTTaskTache;
 import com.zzxy.ssm.po.AcmgTTaskTacheCustom;
@@ -135,6 +136,6 @@ public interface TaskService {
    *
    * @修改记录（修改时间、作者、原因）：
    */
-  AcmgTTaskInstance getInstanceByInstanceId(String instanceId);
+  AcmgTTaskInstanceCustom getInstanceByInstanceId(String instanceId);
 
 }

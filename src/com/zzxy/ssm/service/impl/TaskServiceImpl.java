@@ -129,7 +129,7 @@ public class TaskServiceImpl implements TaskService {
    * 根据实例ID获取实例信息
    */
   @Override
-  public AcmgTTaskInstance getInstanceByInstanceId(String instanceId) {
+  public AcmgTTaskInstanceCustom getInstanceByInstanceId(String instanceId) {
     AcmgTTaskInstanceCustom instanceCustom = new AcmgTTaskInstanceCustom();
     instanceCustom.setInstanceId(instanceId);
     AcmgTTaskInstanceQueryVO queryVO = new AcmgTTaskInstanceQueryVO(null, instanceCustom );

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>
-      修改任务环节信息
+      修改环节实例信息
     </title>
     <!-- Bootstrap Core CSS -->
     <link href="<%=path %>/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -34,7 +34,7 @@
           <form id="form">
             <div class="panel panel-info">
               <div class="panel-heading">
-                修改任务环节信息
+                修改环节实例信息
                 <div style="float: right">
                   <a href="${pageContext.request.contextPath }/task/listTache.do?taskId=${taskId}">
                     <i class="fa fa-history fa-fw"></i>返回 </a>
@@ -42,37 +42,37 @@
               </div>
             </div>
             <div class="panel-body">
-              <input type="hidden" id="taskId" name="taskId" value="${taskId }">
+              <input type="hidden" id="tacheId" name="tacheId" value="${tacheId }">
               <input type="hidden" id="tacheId" name="tacheId" value="${tacheCustom.tacheId }">
               <table width="100%" class="table table-striped table-bordered table-hover">
                 <tr>
                   <td align="right" width="30%">
-                    环节类别:
+                    实例类别:
                     <font color="red">*</font>
                   </td>
                   <td>
-                    <select id="tacheType" name="tacheType" class="form-control">
+                    <select id="instanceType" name="instanceType" class="form-control">
                     </select>
                   </td>
                   <td width="40%"></td>
                 </tr>
                 <tr>
                   <td align="right">
-                    环节标识:
+                    实例标识:
                   </td>
                   <td>
-                    <input type="text" id="tacheFlag" name="tacheFlag" class="form-control" value="${tacheCustom.tacheFlag }" >
+                    <input type="text" id="instanceFlag" name="instanceFlag" class="form-control" value="${tacheCustom.tacheFlag }" >
                   </td>
                   <td width="40%" id="taskFlagTip"></td>
                 </tr>
 
                 <tr>
                   <td align="right">
-                    环节名称:
+                    实例名称:
                     <font color="red">*</font>
                   </td>
                   <td>
-                    <input type="text" id="tacheName" name="tacheName" class="form-control" value="${tacheCustom.tacheName }">
+                    <input type="text" id="instanceName" name="instanceName" class="form-control" value="${tacheCustom.tacheName }">
                   </td>
                   <td width="40%"></td>
                 </tr>

@@ -23,7 +23,7 @@
   </select>
   
   <!-- 根据查询VO获取实例信息 -->
-  <select id="getInstanceByVO" resultMap="InstanceMap" parameterType="com.zzxy.ssm.po.AcmgTTaskInstanceQueryVO" >
+  <select id="getInstanceByVO" resultType="com.zzxy.ssm.po.AcmgTTaskInstanceCustom" parameterType="com.zzxy.ssm.po.AcmgTTaskInstanceQueryVO" >
     select 
     <include refid="Instance_Column_List" />
     from acmg_t_task_instance

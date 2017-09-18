@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.zzxy.ssm.po.AcmgTTask;
 import com.zzxy.ssm.po.AcmgTTaskCustom;
 import com.zzxy.ssm.po.AcmgTTaskInstance;
+import com.zzxy.ssm.po.AcmgTTaskInstanceCustom;
 import com.zzxy.ssm.po.AcmgTTaskQueryVO;
 import com.zzxy.ssm.po.AcmgTTaskTache;
 import com.zzxy.ssm.po.AcmgTTaskTacheCustom;
@@ -316,12 +317,13 @@ public class TaskController {
   public ModelAndView showEditInstance(@RequestParam(value = "tacheId") String tacheId, @RequestParam(value = "instanceId", required = false) String instanceId)
       throws Exception {
     ModelAndView modelAndView = new ModelAndView();
-    modelAndView.addObject("tacheId", tacheId);
-    AcmgTTaskInstance instance = new AcmgTTaskInstance();
+    AcmgTTaskInstanceCustom instanceCustom = new AcmgTTaskInstanceCustom();
     
     if(StringUtils.isNotBlank(instanceId)) {
-      instance = taskService.getInstanceByInstanceId(instanceId);
+      instanceCustom = taskService.getInstanceByInstanceId(instanceId);
     }
+    modelAndView.addObject("tacheId", tacheId);
+    modelAndView.addObject("instanceCustom", instanceCustom);
     modelAndView.setViewName("/task/instance/EditInstance");
     return modelAndView;
   }

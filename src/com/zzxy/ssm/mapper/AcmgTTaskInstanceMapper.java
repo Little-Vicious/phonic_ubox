@@ -1,6 +1,7 @@
 package com.zzxy.ssm.mapper;
 
 import com.zzxy.ssm.po.AcmgTTaskInstance;
+import com.zzxy.ssm.po.AcmgTTaskInstanceCustom;
 import com.zzxy.ssm.po.AcmgTTaskInstanceQueryVO;
 
 public interface AcmgTTaskInstanceMapper {
@@ -27,5 +28,5 @@ public interface AcmgTTaskInstanceMapper {
      *
      * @修改记录（修改时间、作者、原因）：
      */
-    AcmgTTaskInstance getInstanceByVO(AcmgTTaskInstanceQueryVO queryVO);
+    AcmgTTaskInstanceCustom getInstanceByVO(AcmgTTaskInstanceQueryVO queryVO);
 }
