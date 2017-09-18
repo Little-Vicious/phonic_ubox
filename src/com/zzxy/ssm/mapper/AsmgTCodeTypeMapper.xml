@@ -278,6 +278,7 @@
     <include refid="CodeInfo_Column_List"/>
     from ASMG_T_CODE_INFO
     <include refid="CodeInfo_Where_Clause"/>
+    order by INDEX_NO
   </select>
   
   <!-- 根据主键获取码值信息 -->

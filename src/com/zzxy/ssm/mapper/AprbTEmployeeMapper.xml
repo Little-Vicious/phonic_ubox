@@ -15,7 +15,7 @@
   <sql id="Query_Employee_Where">
      <if test="aprbTEmployeeCustom != null">
         <if test="aprbTEmployeeCustom.account !=null and aprbTEmployeeCustom.account != ''">
-          and account = #{ACCOUNT,jdbcType=VARCHAR}
+          and account = #{aprbTEmployeeCustom.account,jdbcType=VARCHAR}
         </if>
      </if>
   </sql>
@@ -27,6 +27,7 @@
     where ID = #{id,jdbcType=VARCHAR}
   </select>
   
+  <!-- 根据查询VO查询员工信息 -->
   <select id="getEmployeeByVO" resultMap="EmployeeMap" parameterType="com.zzxy.ssm.po.AprbTEmployeeQueryVO">
     select 
     <include refid="Employee_Column_List" />
@@ -35,6 +36,7 @@
       <include refid="Query_Employee_Where"/>
     </trim>
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from aprb_t_employee
     where ID = #{id,jdbcType=VARCHAR}

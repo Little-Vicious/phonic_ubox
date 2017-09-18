@@ -223,7 +223,7 @@ input[type="checkbox"]:not(:checked):hover + label, input[type="checkbox"]:not(:
 	text-decoration: underline;
 }
 
-input[type="submit"] {
+input[name="submit"] {
 	width: 95px;
 	height: 73px;
 	float: left;
@@ -234,7 +234,7 @@ input[type="submit"] {
 	color: #ffffff;
 }
 
-input[type="submit"]:hover, input[type="submit"]:focus {
+input[name="submit"]:hover, input[name="submit"]:focus {
 	background: url(../../images/login/go-hover.png) top left no-repeat;
 }
 

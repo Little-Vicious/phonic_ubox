@@ -35,4 +35,7 @@
 	<!-- 员工登录的Service -->
 	<bean id="loginService" class="com.zzxy.ssm.service.impl.LoginServiceImpl"/>
 	
+	<!-- 任务调度Service -->
+	<bean id="taskService" class="com.zzxy.ssm.service.impl.TaskServiceImpl"/>
+	
 </beans>

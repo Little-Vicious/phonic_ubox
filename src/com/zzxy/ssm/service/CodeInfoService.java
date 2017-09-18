@@ -129,4 +129,17 @@ public interface CodeInfoService {
 	 * @修改记录（修改时间、作者、原因）：
 	 */
 	public List<AsmgTCodeTypeCustom> listCodeTypeCustom();
+
+	/**
+	 * 获取指定类型的码值Map，初始化下拉框用
+	 * 
+	 * @作者： 王文博
+	 * @创建日期：2017年9月13日
+	 *
+	 * @param typeCode
+	 * @return List<AsmgTCodeTypeCustom>
+	 *
+	 * @修改记录（修改时间、作者、原因）：
+	 */
+  public AsmgTCodeTypeCustom getCodeTypeCustomByType(String typeCode);
 }

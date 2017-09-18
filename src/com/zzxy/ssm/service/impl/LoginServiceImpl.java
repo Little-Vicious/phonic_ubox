@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zzxy.ssm.mapper.AprbTEmployeeMapper;
 import com.zzxy.ssm.po.AprbTEmployee;
+import com.zzxy.ssm.po.AprbTEmployeeCustom;
+import com.zzxy.ssm.po.AprbTEmployeeQueryVO;
 import com.zzxy.ssm.service.LoginService;
 /**
  * 登录Service实现类
@@ -25,7 +27,10 @@ public class LoginServiceImpl implements LoginService {
    */
   @Override
   public AprbTEmployee getEmployeeByAccount(String account) {
-    return employeeMapper.getEmployeeByAccount(account);
+    AprbTEmployeeCustom aprbTEmployeeCustom = new AprbTEmployeeCustom();
+    aprbTEmployeeCustom.setAccount(account);
+    AprbTEmployeeQueryVO employeeQueryVO = new AprbTEmployeeQueryVO(aprbTEmployeeCustom );
+    return employeeMapper.getEmployeeByVO(employeeQueryVO);
   }
   
 }

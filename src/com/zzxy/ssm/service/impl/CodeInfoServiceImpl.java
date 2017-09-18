@@ -118,19 +118,27 @@ public class CodeInfoServiceImpl implements CodeInfoService {
     List<AsmgTCodeType> listCodeTypes = this.listCodetypeAll();
     // 对所有的码值类型信息进行遍历
     for (AsmgTCodeType asmgTCodeType : listCodeTypes) {
-      // 初始化码值包装类，将当前遍历到的码值类型信息放进包装类
-      AsmgTCodeTypeCustom asmgTCodeTypeCustom = new AsmgTCodeTypeCustom();
-      BeanUtils.copyProperties(asmgTCodeType, asmgTCodeTypeCustom);
-
-      // 通过codeInfoService按当前遍历到的码值类型信息中的码值类型查到所有码值信息列表
-      // 将码值信息列表放入码值包装类
-      List<AsmgTCodeInfo> lsitAsmgTCodeInfo = this.listCodeInfoByCodetype(asmgTCodeType.getTypeCode());
-      asmgTCodeTypeCustom.setListAsmgTCodeInfo(lsitAsmgTCodeInfo);
-
       // 将码值包装类放到码值包装类列表中
-      listCodeTypeCustoms.add(asmgTCodeTypeCustom);
+      listCodeTypeCustoms.add(this.getCodeTypeCustomByType(asmgTCodeType.getTypeCode()));
     }
     return listCodeTypeCustoms;
+  }
+
+	/**
+	 * 获取指定类型的码值Map，初始化下拉框用
+	 */
+  @Override
+  public AsmgTCodeTypeCustom getCodeTypeCustomByType(String typeCode) {
+    AsmgTCodeType asmgTCodeType = this.getCodeTypeByPrimaryKey(typeCode);
+    
+    AsmgTCodeTypeCustom asmgTCodeTypeCustom = new AsmgTCodeTypeCustom();
+    BeanUtils.copyProperties(asmgTCodeType, asmgTCodeTypeCustom);
+    
+    // 通过codeInfoService按当前遍历到的码值类型信息中的码值类型查到所有码值信息列表
+    // 将码值信息列表放入码值包装类
+    List<AsmgTCodeInfo> lsitAsmgTCodeInfo = this.listCodeInfoByCodetype(asmgTCodeType.getTypeCode());
+    asmgTCodeTypeCustom.setListAsmgTCodeInfo(lsitAsmgTCodeInfo);
+    return asmgTCodeTypeCustom;
   }
 	
 	

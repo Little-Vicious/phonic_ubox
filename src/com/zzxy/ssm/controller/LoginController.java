@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zzxy.ssm.common.utils.MD5Tools;
@@ -58,6 +59,7 @@ public class LoginController {
    * @修改记录（修改时间、作者、原因）：
    */
   @RequestMapping("/login")
+  @ResponseBody
   public Map<String, Object> login(HttpServletRequest request) throws Exception{
     Map<String, Object> result = new HashMap<String, Object>();
     String msg = "";
@@ -66,7 +68,8 @@ public class LoginController {
     String password = request.getParameter("password");
     AprbTEmployee employee = loginService.getEmployeeByAccount(account);
     if(employee != null && employee.getId() != null) {
-      if(employee.getPassword().equals(MD5Tools.MD5(password))) {
+      String pwd = MD5Tools.MD5(password);
+      if(employee.getPassword().equals(pwd)) {
         msg = "验证通过！";
         flag = true;
       }else {
@@ -78,6 +81,23 @@ public class LoginController {
     result.put("success", flag);
     result.put("message", msg);
     return result;
+  }
+  
+  /**
+   * 登录成功，跳转欢迎界面
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月13日
+   *
+   * @return
+   * @throws Exception ModelAndView
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  @RequestMapping("success")
+  public ModelAndView success() throws Exception{
+    ModelAndView modelAndView = new ModelAndView("/welcome");
+    return modelAndView;
   }
   
 }

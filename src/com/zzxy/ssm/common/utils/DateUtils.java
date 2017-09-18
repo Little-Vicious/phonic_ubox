@@ -5,7 +5,18 @@ import java.util.Date;
 public class DateUtils {
 	
 	
-	
+	/**
+	 * 获取两个时间之间的持续时间，返回long值
+	 * 
+	 * @作者： 王文博
+	 * @创建日期：2017年9月15日
+	 *
+	 * @param endTime
+	 * @param startTime
+	 * @return long
+	 *
+	 * @修改记录（修改时间、作者、原因）：
+	 */
 	private long getDuration(Date endTime,Date startTime){
 		long between = getTimeBetween(endTime, startTime);
 		long day = between/(24*60*60*1000);

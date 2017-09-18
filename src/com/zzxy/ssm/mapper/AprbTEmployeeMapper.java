@@ -1,6 +1,7 @@
 package com.zzxy.ssm.mapper;
 
 import com.zzxy.ssm.po.AprbTEmployee;
+import com.zzxy.ssm.po.AprbTEmployeeQueryVO;
 
 public interface AprbTEmployeeMapper {
     int deleteByPrimaryKey(String id);
@@ -22,6 +23,6 @@ public interface AprbTEmployeeMapper {
      *
      * @修改记录（修改时间、作者、原因）：
      */
-    AprbTEmployee getEmployeeByAccount(String account);
+    AprbTEmployee getEmployeeByVO(AprbTEmployeeQueryVO employeeQueryVO);
 
 }

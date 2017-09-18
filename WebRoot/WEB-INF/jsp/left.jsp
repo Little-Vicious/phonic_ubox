@@ -13,7 +13,7 @@
         </div>
       </li>
       <li>
-        <a href="index.jsp"><i class="fa fa-dashboard fa-fw"></i> 首页
+        <a href="${pageContext.request.contextPath }/success.do"><i class="fa fa-dashboard fa-fw"></i> 首页
         </a>
       </li>
       <li>
@@ -52,6 +52,15 @@
           </li>
           <li>
             <a href="${pageContext.request.contextPath }/activity/listActivityGroup.do">活动量管理</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-tasks fa-fw"></i> 批量任务调度<span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+          <li>
+            <a href="${pageContext.request.contextPath }/task/listTask.do">批量任务列表</a>
           </li>
         </ul>
       </li>

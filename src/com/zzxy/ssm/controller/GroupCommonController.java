@@ -95,6 +95,43 @@ public class GroupCommonController {
   }
   
   /**
+   * 通过ajax获取指定类型的码值Map，初始化下拉框用
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年8月9日
+   *
+   * @param request
+   * @return
+   * @throws Exception Map<String,Object>
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  @RequestMapping("getInitCodeByType")
+  @ResponseBody
+  public Map<String, Object> getInitCodeByType(HttpServletRequest request) throws Exception {
+    Map<String, Object> resultMap = new HashMap<String, Object>();
+    String typeCode = request.getParameter("typeCode");
+    //通过codeInfoService获取码值信息包装类
+    AsmgTCodeTypeCustom asmgTCodeTypeCustom = codeInfoService.getCodeTypeCustomByType(typeCode);
+    
+    List<CodeInfo> listCodeInfo = new ArrayList<CodeInfo>();
+    List<AsmgTCodeInfo> listAsmgTCodeInfo = asmgTCodeTypeCustom.getListAsmgTCodeInfo();
+    for(AsmgTCodeInfo asmgTCodeInfo : listAsmgTCodeInfo) {
+      CodeInfo codeInfo = new CodeInfo();
+      codeInfo.setTypeCode(asmgTCodeInfo.getTypeCode());
+      codeInfo.setCodeName(asmgTCodeInfo.getCodeName());
+      codeInfo.setCodeValue(asmgTCodeInfo.getCodeValue());
+      listCodeInfo.add(codeInfo);
+    }
+    CodeType codeType = new CodeType(asmgTCodeTypeCustom.getTypeCode(), asmgTCodeTypeCustom.getTypeName(), listCodeInfo);
+    
+    //组织返回Map值
+    resultMap.put("seccss", true);
+    resultMap.put("codeType", codeType);
+    return resultMap;
+  }
+  
+  /**
    * 保存群组
    * 
    * @作者： 王文博
