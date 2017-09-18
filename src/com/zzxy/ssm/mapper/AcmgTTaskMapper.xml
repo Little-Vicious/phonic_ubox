@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AcmgTTaskMapper" >
+  <resultMap id="TaskMap" type="com.zzxy.ssm.po.AcmgTTask" >
+    <id column="TASK_ID" jdbcType="VARCHAR" property="taskId" />
+    <result column="TASK_TYPE" jdbcType="VARCHAR" property="taskType" />
+    <result column="TASK_NAME" jdbcType="VARCHAR" property="taskName" />
+    <result column="TASK_FLAG" jdbcType="VARCHAR" property="taskFlag" />
+    <result column="TASK_DESCRIPTION" jdbcType="VARCHAR" property="taskDescription" />
+    <result column="TASK_STATUS" jdbcType="INTEGER" property="taskStatus" />
+    <result column="TASK_TIME" jdbcType="TIMESTAMP" property="taskTime" />
+    <result column="TASK_START_TIME" jdbcType="TIMESTAMP" property="taskStartTime" />
+    <result column="TASK_END_TIME" jdbcType="TIMESTAMP" property="taskEndTime" />
+    <result column="EXEC_RATE" jdbcType="VARCHAR" property="execRate" />
+  </resultMap>
+  
+  <sql id="Task_Column_List" >
+    TASK_ID, TASK_TYPE, TASK_NAME, TASK_FLAG, TASK_DESCRIPTION, TASK_STATUS, TASK_TIME, 
+    TASK_START_TIME, TASK_END_TIME, EXEC_RATE
+  </sql>
+  
+  <!-- TaskCustom列表 -->
+  <sql id="TaskCustom_Column_List" >
+    TASK_ID as taskId,
+    TASK_TYPE as taskType,
+    TASK_NAME as taskName,
+    TASK_FLAG as taskFlag,
+    TASK_DESCRIPTION as taskDescription,
+    TASK_STATUS as taskStatus,
+    TASK_TIME as taskTime,
+    TASK_START_TIME as taskStartTime,
+    TASK_END_TIME as taskEndTime
+  </sql>
+  
+  <!-- 查询任务条件拼接 -->
+  <sql id="Query_Task_Where">
+     <if test="acmgTTaskCustom != null">
+       <if test="acmgTTaskCustom.taskFlag != null and acmgTTaskCustom.taskFlag != ''">
+        and TASK_FLAG = #{acmgTTaskCustom.taskFlag,jdbcType=VARCHAR}
+       </if>
+     </if>
+  </sql>
+  
+  <!-- 根据主键获取任务信息 -->
+  <select id="getTaskByPrimaryKey" resultMap="TaskMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Task_Column_List" />
+    from acmg_t_task
+    where TASK_ID = #{taskId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 获取任务调度列表 -->
+  <select id="listTaskCustomByVO" resultType="com.zzxy.ssm.po.AcmgTTaskCustom" parameterType="com.zzxy.ssm.po.AcmgTTaskQueryVO">
+    select 
+    <include refid="TaskCustom_Column_List" />
+    from acmg_t_task
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_Task_Where"/>
+    </trim>
+  </select>
+  
+  <!-- 根据查询VO获取任务信息 -->
+  <select id="getTaskByVO" resultMap="TaskMap" parameterType="com.zzxy.ssm.po.AcmgTTaskQueryVO">
+    select 
+    <include refid="Task_Column_List" />
+    from acmg_t_task
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_Task_Where"/>
+    </trim>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from acmg_t_task
+    where TASK_ID = #{taskId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 新增任务调度信息 -->
+  <insert id="insertTask" parameterType="com.zzxy.ssm.po.AcmgTTask" >
+    <selectKey keyProperty="taskId" order="BEFORE" resultType="java.lang.String">
+      select upper(replace(UUID(),'-',''))
+    </selectKey>
+    insert into acmg_t_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        TASK_ID,
+      </if>
+      <if test="taskType != null">
+        TASK_TYPE,
+      </if>
+      <if test="taskName != null">
+        TASK_NAME,
+      </if>
+      <if test="taskFlag != null">
+        TASK_FLAG,
+      </if>
+      <if test="taskDescription != null">
+        TASK_DESCRIPTION,
+      </if>
+      <if test="taskStatus != null">
+        TASK_STATUS,
+      </if>
+      <if test="taskTime != null">
+        TASK_TIME,
+      </if>
+      <if test="taskStartTime != null">
+        TASK_START_TIME,
+      </if>
+      <if test="taskEndTime != null">
+        TASK_END_TIME,
+      </if>
+      <if test="execRate != null">
+        EXEC_RATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null">
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFlag != null">
+        #{taskFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDescription != null">
+        #{taskDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null">
+        #{taskStatus,jdbcType=INTEGER},
+      </if>
+      <if test="taskTime != null">
+        #{taskTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskStartTime != null">
+        #{taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEndTime != null">
+        #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="execRate != null">
+        #{execRate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新任务调度信息 -->
+  <update id="updateTask" parameterType="com.zzxy.ssm.po.AcmgTTask" >
+    update acmg_t_task
+    <set>
+      <if test="taskType != null">
+        TASK_TYPE = #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        TASK_NAME = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFlag != null">
+        TASK_FLAG = #{taskFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDescription != null">
+        TASK_DESCRIPTION = #{taskDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null">
+        TASK_STATUS = #{taskStatus,jdbcType=INTEGER},
+      </if>
+      <if test="taskTime != null">
+        TASK_TIME = #{taskTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskStartTime != null">
+        TASK_START_TIME = #{taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEndTime != null">
+        TASK_END_TIME = #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="execRate != null">
+        EXEC_RATE = #{execRate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TASK_ID = #{taskId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzxy.ssm.mapper.AcmgTTaskTacheMapper" >
+  <resultMap id="TacheMap" type="com.zzxy.ssm.po.AcmgTTaskTache" >
+    <id column="TACHE_ID" property="tacheId" jdbcType="VARCHAR" />
+    <result column="TACHE_NAME" property="tacheName" jdbcType="VARCHAR" />
+    <result column="TACHE_FLAG" property="tacheFlag" jdbcType="VARCHAR" />
+    <result column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
+    <result column="TACHE_TYPE" property="tacheType" jdbcType="VARCHAR" />
+    <result column="TACHE_STUTAS" property="tacheStutas" jdbcType="INTEGER" />
+    <result column="TACHE_TIME" property="tacheTime" jdbcType="TIMESTAMP" />
+    <result column="TACHE_START_TIME" property="tacheStartTime" jdbcType="TIMESTAMP" />
+    <result column="TACHE_END_TIME" property="tacheEndTime" jdbcType="TIMESTAMP" />
+    <result column="TACHE_INDEX" property="tacheIndex" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Tache_Column_List" >
+    TACHE_ID, TACHE_NAME, TACHE_FLAG, TASK_ID, TACHE_TYPE, TACHE_STUTAS, TACHE_TIME, 
+    TACHE_START_TIME, TACHE_END_TIME, TACHE_INDEX
+  </sql>
+  
+  <!-- 环节包装类字段列表 -->
+  <sql id="TacheCustom_Column_List">
+    TACHE_ID tacheId, TACHE_NAME tacheName, TACHE_FLAG tacheFlag, 
+    TASK_ID taskId, TACHE_TYPE tacheType, TACHE_STUTAS tacheStutas, 
+    TACHE_TIME tacheTime,TACHE_START_TIME tacheStartTime, TACHE_END_TIME tacheEndTime,
+    TACHE_INDEX tacheIndex
+  </sql>
+  
+  <!-- 环节包装类查询条件 -->
+  <sql id="Query_TacheCustom_Where">
+    <if test="taskTacheCustom != null">
+      <if test="taskTacheCustom.taskId != null and taskTacheCustom.taskId != ''">
+        and TASK_ID = #{taskTacheCustom.taskId,jdbcType=VARCHAR}
+      </if>
+    </if>
+  </sql>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="TacheMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Tache_Column_List" />
+    from acmg_t_task_tache
+    where TACHE_ID = #{tacheId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据查询VO获取环节列表 -->
+  <select id="listTacheCustomByVO" resultType="com.zzxy.ssm.po.AcmgTTaskTacheCustom" parameterType="com.zzxy.ssm.po.AcmgTTaskTacheQueryVO" >
+    select 
+    <include refid="TacheCustom_Column_List" />
+    from acmg_t_task_tache
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_TacheCustom_Where"/>
+    </trim>
+    ORDER BY
+		  tache_index
+  </select>
+  
+  <!-- 根据查询VO获取环节信息 -->
+  <select id="getTacheByVO" resultType="com.zzxy.ssm.po.AcmgTTaskTacheCustom" parameterType="com.zzxy.ssm.po.AcmgTTaskTacheQueryVO">
+    select 
+    <include refid="TacheCustom_Column_List" />
+    from acmg_t_task_tache
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_TacheCustom_Where"/>
+    </trim>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from acmg_t_task_tache
+    where TACHE_ID = #{tacheId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 根据任务编号获取目前环节的最大值 -->
+  <select id="getMaxIndexByTaskId" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+		IF
+		  ( isnull( max( t.tache_index ) ), 0, max( t.tache_index ) ) AS maxIndex 
+		FROM
+		  acmg_t_task_tache t 
+		WHERE
+		  t.TASK_ID = #{taskId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 新增环节信息 -->
+  <insert id="insertTaskTache" parameterType="com.zzxy.ssm.po.AcmgTTaskTache" >
+    <selectKey keyProperty="tacheId" order="BEFORE" resultType="java.lang.String">
+      select upper(replace(UUID(),'-',''))
+    </selectKey>
+    insert into acmg_t_task_tache
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tacheId != null" >
+        TACHE_ID,
+      </if>
+      <if test="tacheName != null" >
+        TACHE_NAME,
+      </if>
+      <if test="tacheFlag != null" >
+        TACHE_FLAG,
+      </if>
+      <if test="taskId != null" >
+        TASK_ID,
+      </if>
+      <if test="tacheType != null" >
+        TACHE_TYPE,
+      </if>
+      <if test="tacheStutas != null" >
+        TACHE_STUTAS,
+      </if>
+      <if test="tacheTime != null" >
+        TACHE_TIME,
+      </if>
+      <if test="tacheStartTime != null" >
+        TACHE_START_TIME,
+      </if>
+      <if test="tacheEndTime != null" >
+        TACHE_END_TIME,
+      </if>
+      <if test="tacheIndex != null" >
+        TACHE_INDEX,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tacheId != null" >
+        #{tacheId,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheName != null" >
+        #{tacheName,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheFlag != null" >
+        #{tacheFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheType != null" >
+        #{tacheType,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheStutas != null" >
+        #{tacheStutas,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheTime != null" >
+        #{tacheTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tacheStartTime != null" >
+        #{tacheStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tacheEndTime != null" >
+        #{tacheEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tacheIndex != null" >
+        #{tacheIndex,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新环节信息 -->
+  <update id="updateTaskTache" parameterType="com.zzxy.ssm.po.AcmgTTaskTache" >
+    update acmg_t_task_tache
+    <set >
+      <if test="tacheName != null" >
+        TACHE_NAME = #{tacheName,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheFlag != null" >
+        TACHE_FLAG = #{tacheFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        TASK_ID = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheType != null" >
+        TACHE_TYPE = #{tacheType,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheStutas != null" >
+        TACHE_STUTAS = #{tacheStutas,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheTime != null" >
+        TACHE_TIME = #{tacheTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tacheStartTime != null" >
+        TACHE_START_TIME = #{tacheStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tacheEndTime != null" >
+        TACHE_END_TIME = #{tacheEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tacheIndex != null" >
+        TACHE_INDEX = #{tacheIndex,jdbcType=INTEGER},
+      </if>
+    </set>
+    where TACHE_ID = #{tacheId,jdbcType=VARCHAR}
+  </update>
+</mapper>

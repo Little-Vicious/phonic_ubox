@@ -1,0 +1,114 @@
+package com.zzxy.ssm.service;
+
+import java.util.List;
+
+import com.zzxy.ssm.po.AcmgTTask;
+import com.zzxy.ssm.po.AcmgTTaskCustom;
+import com.zzxy.ssm.po.AcmgTTaskQueryVO;
+import com.zzxy.ssm.po.AcmgTTaskTache;
+import com.zzxy.ssm.po.AcmgTTaskTacheCustom;
+
+/**
+ * 批量任务调度Service
+ * 
+ * @工程： 批量调度平台
+ * @模块： 
+ * 
+ * @作者： 王文博
+ * @创建日期： 2017年9月13日
+ * 
+ * @修改记录（修改时间、作者、原因）：
+ */
+public interface TaskService {
+  
+  /**
+   * 保存批量任务调度信息
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月13日
+   *
+   * @param acmgTTask void
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  void saveTask(AcmgTTask acmgTTask) throws Exception;
+  
+  /**
+   *获取任务调度列表
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月14日
+   *
+   * @param taskQueryVO
+   * @return List<AcmgTTaskCustom>
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  List<AcmgTTaskCustom> listTaskCustomByVO(AcmgTTaskQueryVO taskQueryVO) throws Exception;
+
+  /**
+   * 根据ID获取任务信息
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月15日
+   *
+   * @param taskId
+   * @return AcmgTTask
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  AcmgTTask getTaskById(String taskId) throws Exception;
+
+  /**
+   * 根据任务标识获取任务信息，用于判断是否存在相同的任务标识
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月15日
+   *
+   * @param taskFlag
+   * @return AcmgTTask
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  AcmgTTask getTaskByFlag(String taskFlag) throws Exception;
+
+  /**
+   * 根据任务编号，查询环节列表
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @param taskId
+   * @return List<AcmgTTaskTacheCustom>
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  List<AcmgTTaskTacheCustom> listTacheCustomByTaskId(String taskId) throws Exception;
+
+  /**
+   * 根据tacheId获取环节信息
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @param tacheId
+   * @return AcmgTTaskTacheCustom
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  AcmgTTaskTacheCustom getTacheByTacheId(String tacheId);
+
+  /**
+   * 保存环节信息
+   * 
+   * @作者： 王文博
+   * @throws Exception 
+   * @创建日期：2017年9月18日
+   *
+   * @param taskTache void
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  void saveTache(AcmgTTaskTache taskTache) throws Exception;
+
+}
