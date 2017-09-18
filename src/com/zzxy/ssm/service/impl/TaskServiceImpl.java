@@ -5,10 +5,14 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.zzxy.ssm.mapper.AcmgTTaskInstanceMapper;
 import com.zzxy.ssm.mapper.AcmgTTaskMapper;
 import com.zzxy.ssm.mapper.AcmgTTaskTacheMapper;
 import com.zzxy.ssm.po.AcmgTTask;
 import com.zzxy.ssm.po.AcmgTTaskCustom;
+import com.zzxy.ssm.po.AcmgTTaskInstance;
+import com.zzxy.ssm.po.AcmgTTaskInstanceCustom;
+import com.zzxy.ssm.po.AcmgTTaskInstanceQueryVO;
 import com.zzxy.ssm.po.AcmgTTaskQueryVO;
 import com.zzxy.ssm.po.AcmgTTaskTache;
 import com.zzxy.ssm.po.AcmgTTaskTacheCustom;
@@ -32,6 +36,9 @@ public class TaskServiceImpl implements TaskService {
   
   @Autowired
   private AcmgTTaskTacheMapper tacheMapper;
+  
+  @Autowired
+  private AcmgTTaskInstanceMapper instanceMapper;
   
   /**
    * 保存批量任务调度信息
@@ -92,7 +99,7 @@ public class TaskServiceImpl implements TaskService {
     AcmgTTaskTacheCustom taskTacheCustom = new AcmgTTaskTacheCustom();
     taskTacheCustom.setTacheId(tacheId);
     AcmgTTaskTacheQueryVO queryVO = new AcmgTTaskTacheQueryVO(null, taskTacheCustom );
-    return tacheMapper.getTacheByVO(taskTacheCustom);
+    return tacheMapper.getTacheByVO(queryVO);
   }
 
   /**
@@ -108,6 +115,25 @@ public class TaskServiceImpl implements TaskService {
     }else {
       tacheMapper.updateTaskTache(taskTache);
     }
+  }
+
+  /**
+   * 根据ID删除环节
+   */
+  @Override
+  public void deleteTacheByTacheId(String tacheId) throws Exception{
+    tacheMapper.deleteTache(tacheId);
+  }
+
+  /**
+   * 根据实例ID获取实例信息
+   */
+  @Override
+  public AcmgTTaskInstance getInstanceByInstanceId(String instanceId) {
+    AcmgTTaskInstanceCustom instanceCustom = new AcmgTTaskInstanceCustom();
+    instanceCustom.setInstanceId(instanceId);
+    AcmgTTaskInstanceQueryVO queryVO = new AcmgTTaskInstanceQueryVO(null, instanceCustom );
+    return instanceMapper.getInstanceByVO(queryVO);
   }
 
 }

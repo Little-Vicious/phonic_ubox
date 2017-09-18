@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.zzxy.ssm.po.AcmgTTask;
 import com.zzxy.ssm.po.AcmgTTaskCustom;
+import com.zzxy.ssm.po.AcmgTTaskInstance;
 import com.zzxy.ssm.po.AcmgTTaskQueryVO;
 import com.zzxy.ssm.po.AcmgTTaskTache;
 import com.zzxy.ssm.po.AcmgTTaskTacheCustom;
@@ -110,5 +111,30 @@ public interface TaskService {
    * @修改记录（修改时间、作者、原因）：
    */
   void saveTache(AcmgTTaskTache taskTache) throws Exception;
+
+  /**
+   * 根据ID删除环节
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @param tacheId void
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  void deleteTacheByTacheId(String tacheId) throws Exception;
+
+  /**
+   * 根据实例ID获取实例信息
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @param instanceId
+   * @return AcmgTTaskInstance
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  AcmgTTaskInstance getInstanceByInstanceId(String instanceId);
 
 }

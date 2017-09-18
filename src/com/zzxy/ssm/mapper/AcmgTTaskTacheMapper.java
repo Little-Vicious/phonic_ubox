@@ -10,7 +10,18 @@ import com.zzxy.ssm.po.AcmgTTaskTacheQueryVO;
 
 public interface AcmgTTaskTacheMapper {
 
-    int deleteByPrimaryKey(String tacheId);
+  /**
+   * 根据ID删除环节信息
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @param tacheId
+   * @return int
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+    int deleteTache(String tacheId);
 
     /**
      * 新增环节信息
@@ -64,7 +75,7 @@ public interface AcmgTTaskTacheMapper {
      *
      * @修改记录（修改时间、作者、原因）：
      */
-    AcmgTTaskTacheCustom getTacheByVO(AcmgTTaskTacheCustom taskTacheCustom);
+    AcmgTTaskTacheCustom getTacheByVO(AcmgTTaskTacheQueryVO queryVO);
     
     /**
      * 根据任务ID获取环节的当前顺序号最大值

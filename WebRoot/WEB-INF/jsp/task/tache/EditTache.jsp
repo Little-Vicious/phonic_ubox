@@ -145,7 +145,7 @@
               dataType:"json",
               success: function(msg) {
                 console.log(JSON.stringify(msg));
-                //window.location.href = getContextPath()+"/task/listTask.do";
+                window.location.href = getContextPath()+"/task/listTache.do?taskId="+taskId;
               },
               error: function(er) {
                 console.log(JSON.stringify(er));

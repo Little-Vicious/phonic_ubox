@@ -33,6 +33,9 @@
       <if test="taskTacheCustom.taskId != null and taskTacheCustom.taskId != ''">
         and TASK_ID = #{taskTacheCustom.taskId,jdbcType=VARCHAR}
       </if>
+      <if test="taskTacheCustom.tacheId != null and taskTacheCustom.tacheId != ''">
+        and TACHE_ID = #{taskTacheCustom.tacheId,jdbcType=VARCHAR}
+      </if>
     </if>
   </sql>
   
@@ -66,7 +69,8 @@
     </trim>
   </select>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <!-- 根据环节编号删除环节信息 -->
+  <delete id="deleteTache" parameterType="java.lang.String" >
     delete from acmg_t_task_tache
     where TACHE_ID = #{tacheId,jdbcType=VARCHAR}
   </delete>

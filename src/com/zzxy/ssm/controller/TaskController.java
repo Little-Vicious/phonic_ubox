@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.zzxy.ssm.po.AcmgTTask;
 import com.zzxy.ssm.po.AcmgTTaskCustom;
+import com.zzxy.ssm.po.AcmgTTaskInstance;
 import com.zzxy.ssm.po.AcmgTTaskQueryVO;
 import com.zzxy.ssm.po.AcmgTTaskTache;
 import com.zzxy.ssm.po.AcmgTTaskTacheCustom;
@@ -199,6 +200,18 @@ public class TaskController {
     return modelAndView;
   }
   
+  /**
+   * 编辑环节信息提交
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @param request
+   * @return
+   * @throws Exception Map<String,Object>
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
   @RequestMapping("submitEditTache")
   @ResponseBody
   public Map<String, Object> submitEditTache(HttpServletRequest request)throws Exception{
@@ -232,6 +245,85 @@ public class TaskController {
     map.put("flag", flag);
     
     return map;
+  }
+  
+  /**
+   * 根据ID删除环节信息
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @param tacheId
+   * @return
+   * @throws Exception Map<String,Object>
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  @RequestMapping("deleteTache")
+  @ResponseBody
+  public Map<String, Object> deleteTache(@RequestParam(value = "tacheId") String tacheId) throws Exception{
+    Map<String, Object> map = new HashMap<String, Object>();
+    String msg = "";
+    boolean flag = false;
+    
+    try{
+      taskService.deleteTacheByTacheId(tacheId);
+      msg = "删除成功！";
+      flag = true;
+    }catch (Exception e) {
+      e.printStackTrace();
+      msg = e.getMessage();
+    }
+    
+    map.put("msg", msg);
+    map.put("flag", flag);
+    
+    return map;
+  }
+  
+  /**
+   * 实例列表
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @param tacheId
+   * @return
+   * @throws Exception ModelAndView
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  @RequestMapping("listInstance")
+  public ModelAndView listInstance(@RequestParam(value = "tacheId")String tacheId) throws Exception {
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.addObject("tacheId", tacheId);
+    modelAndView.setViewName("/task/instance/ListInstance");
+    return modelAndView;
+  }
+  
+  /**
+   * 展示实例编辑页面
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月18日
+   *
+   * @return
+   * @throws Exception ModelAndView
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  @RequestMapping("showEditInstance")
+  public ModelAndView showEditInstance(@RequestParam(value = "tacheId") String tacheId, @RequestParam(value = "instanceId", required = false) String instanceId)
+      throws Exception {
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.addObject("tacheId", tacheId);
+    AcmgTTaskInstance instance = new AcmgTTaskInstance();
+    
+    if(StringUtils.isNotBlank(instanceId)) {
+      instance = taskService.getInstanceByInstanceId(instanceId);
+    }
+    modelAndView.setViewName("/task/instance/EditInstance");
+    return modelAndView;
   }
   
 }

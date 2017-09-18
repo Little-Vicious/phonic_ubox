@@ -41,6 +41,9 @@
     <script src="<%=path %>/css/dist/js/sb-admin-2.js">
     </script>
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    
+    <script type="text/javascript" src="<%=path %>/js/initPage.js"></script>
+    
     <script>
       $(document).ready(function() {
         $('#dataTables-example').DataTable({
@@ -65,13 +68,41 @@
         });
       });
       
-      function del(dlink) {
+      function del(tacheId) {
           if (confirm("您确定要删除么？删除后将无法恢复！")) {
-            return true;
+            var taskId = $("#taskId").val();
+            
+            $.ajax({
+              url:getContextPath() + "/task/deleteTache.do",
+              type:"POST",
+              data:{
+                "tacheId":tacheId
+              },
+              dataType:"json",
+              success: function(msg) {
+                var str = JSON.stringify(msg);
+                console.log(str);
+                var obj = eval('('+str+')');
+                var flag = obj.flag;
+                var msg = obj.msg;
+                if(flag){
+                  window.location.href = getContextPath()+"/task/listTache.do?taskId="+taskId;
+                }else {
+                  alert(msg);
+                }
+                
+              },
+              error: function(er) {
+                console.log(JSON.stringify(er));
+              }
+            });
+            return false;
           } else {
             return false;
           }
         }
+      
+      
     </script>
 
   </head>
@@ -83,12 +114,12 @@
       <div id="page-wrapper">
         <div class="panel panel-default">
           <form method="post">
-          <input type="hidden" name="taskId" id="taskId" value="${taskId}">
+          <input type="hidden" name="tacheId" id="tacheId" value="${tacheId}">
             <div class="panel panel-info">
               <div class="panel-heading">
                任务环节列表
                 <div style="float: right">
-                   <a href="${pageContext.request.contextPath }/task/showEditTache.do?taskId=${ taskId }">
+                   <a href="${pageContext.request.contextPath }/task/showEditTache.do?tacheId=${ tacheId }">
                    <i class="fa fa-plus fa-fw"></i>创建环节</a>
                 </div>
               </div>
@@ -109,25 +140,25 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <c:forEach items="${tasks}" var="task">
+                  <c:forEach items="${tacheCustoms}" var="tache">
                     <tr class="odd gradeX">
-                      <td>${task.taskFlag}</td>
-                      <td>${task.taskName}</td>
-                      <td><fmt:formatDate value="${ task.taskTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                      <td>${task.taskStatus}</td>
-                      <td>${task.completedTasks}/${task.totalTasks}</td>
-                      <td>${task.taskStartTime}</td>
-                      <td>${task.taskEndTime}</td>
-                      <td>${task.duration}</td>
+                      <td>${tache.tacheFlag}</td>
+                      <td>${tache.tacheName}</td>
+                      <td><fmt:formatDate value="${ tache.tacheTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                      <td>${tache.tacheStutas}</td>
+                     <td>${tache.completedTasks}/${tache.totalTasks}</td>
+                      <td>${tache.tacheStartTime}</td>
+                      <td>${tache.tacheEndTime}</td>
+                      <td>${tache.duration}</td>
                       <td>
-                        <a href="${pageContext.request.contextPath }/task/showEditTask.do?taskId=${ task.taskId }">
-                          <i class="fa fa-edit fa-fw"></i>编辑任务
+                        <a href="${pageContext.request.contextPath }/task/showEditTache.do?tacheId=${ tacheId }&&instanceId=${instance.instanceId}">
+                          <i class="fa fa-edit fa-fw"></i>编辑
                         </a>
-                        <a href="${pageContext.request.contextPath }/task/listEditTask.do?typeCode=${task.taskId}">
-                          <i class="fa fa-plus fa-fw"></i>添加环节
+                        <a href="${pageContext.request.contextPath }/task/listInstance.do?tacheId=${ tacheId }">
+                          <i class="fa fa-plus fa-fw"></i>添加实例
                         </a>
-                        <a href="${pageContext.request.contextPath }/task/deleteTask.do?typeCode=${task.taskId}" onclick="return del(this);">
-                          <i class="fa fa-times fa-fw"></i>删除任务
+                        <a href="###" onclick="return del('${instance.instanceId}');">
+                          <i class="fa fa-times fa-fw"></i>删除
                         </a>
                       </td>
                     </tr>
