@@ -119,6 +119,8 @@
               <div class="panel-heading">
                环节实例列表
                 <div style="float: right">
+                   <a href="${pageContext.request.contextPath }/task/listTache.do?taskId=${ taskId }">
+                   <i class="fa fa-history fa-fw"></i>返回</a>
                    <a href="${pageContext.request.contextPath }/task/showEditInstance.do?tacheId=${ tacheId }">
                    <i class="fa fa-plus fa-fw"></i>创建实例</a>
                 </div>
@@ -145,13 +147,13 @@
                       <td>${instance.instanceFlag}</td>
                       <td>${instance.instanceName}</td>
                       <td><fmt:formatDate value="${ instance.instanceTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                      <td>${instance.instanceStutas}</td>
+                      <td>${instance.instanceStatus}</td>
                       <td>${instance.instanceStartTime}</td>
                       <td>${instance.instanceEndTime}</td>
                       <td>${instance.duration}</td>
-                      <td>${instance.scriptPath}</td>
+                      <td>${instance.instanceScriptPath}</td>
                       <td>
-                        <a href="${pageContext.request.contextPath }/task/showEditTache.do?taskId=${ taskId }&&tacheId=${tache.tacheId}">
+                        <a href="${pageContext.request.contextPath }/task/showEditInstance.do?tacheId=${ tacheId }&&instanceId=${instance.instanceId}">
                           <i class="fa fa-edit fa-fw"></i>编辑
                         </a>
                         <a href="${pageContext.request.contextPath }/task/listInstance.do?typeCode=${task.taskId}">

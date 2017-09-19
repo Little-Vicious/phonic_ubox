@@ -86,6 +86,34 @@ public interface TaskService {
    * @修改记录（修改时间、作者、原因）：
    */
   List<AcmgTTaskTacheCustom> listTacheCustomByTaskId(String taskId) throws Exception;
+  
+  /**
+   * 根据任务编号，查询环节总数
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月19日
+   *
+   * @param taskId
+   * @return
+   * @throws Exception int
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  int totalTacheByTaskId(String taskId) throws Exception;
+  
+  /**
+   * 根据任务编号和执行状态，查询环节数
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月19日
+   *
+   * @param taskId
+   * @return
+   * @throws Exception int
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  int countTacheByTaskIdAndStutas(String taskId,int tacheStutas) throws Exception;
 
   /**
    * 根据tacheId获取环节信息
@@ -137,5 +165,30 @@ public interface TaskService {
    * @修改记录（修改时间、作者、原因）：
    */
   AcmgTTaskInstanceCustom getInstanceByInstanceId(String instanceId);
+
+  /**
+   * 保存实例信息
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月19日
+   *
+   * @param instance void
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  void saveInstance(AcmgTTaskInstance instance);
+
+  /**
+   * 根据环节ID获取实例列表
+   * 
+   * @作者： 王文博
+   * @创建日期：2017年9月19日
+   *
+   * @param tacheId
+   * @return List<AcmgTTaskInstanceCustom>
+   *
+   * @修改记录（修改时间、作者、原因）：
+   */
+  List<AcmgTTaskInstanceCustom> listInstanceByTacheId(String tacheId);
 
 }

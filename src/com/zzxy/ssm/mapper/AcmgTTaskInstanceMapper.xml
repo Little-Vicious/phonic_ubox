@@ -10,11 +10,33 @@
     <result column="INSTANCE_TIME" property="instanceTime" jdbcType="TIMESTAMP" />
     <result column="INSTANCE_START_TIME" property="instanceStartTime" jdbcType="TIMESTAMP" />
     <result column="INSTANCE_END_TIME" property="instanceEndTime" jdbcType="TIMESTAMP" />
+    <result column="INSTANCE_SCRIPT_PATH" property="instanceScriptPath" jdbcType="VARCHAR" />
+    <result column="TACHE_ID" property="tacheId" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <!-- Instance字段列表 -->
   <sql id="Instance_Column_List" >
     INSTANCE_ID, INSTANCE_TYPE, INSTANCE_NAME, INSTANCE_FLAG, INSTANCE_STATUS, INSTANCE_TIME, 
-    INSTANCE_START_TIME, INSTANCE_END_TIME
+    INSTANCE_START_TIME, INSTANCE_END_TIME, INSTANCE_SCRIPT_PATH, TACHE_ID
   </sql>
+  
+  <!-- InstanceCustom字段列表 -->
+  <sql id="InstanceCustom_Column_List" >
+    INSTANCE_ID instanceId, INSTANCE_TYPE instanceType, INSTANCE_NAME instanceName, 
+    INSTANCE_FLAG instanceFlag, INSTANCE_STATUS instanceStatus, INSTANCE_TIME instanceTime, 
+    INSTANCE_START_TIME instanceStartTime, INSTANCE_END_TIME instanceEndTime, 
+    INSTANCE_SCRIPT_PATH instanceScriptPath, TACHE_ID tacheId
+  </sql>
+  
+  <!-- 查询实例包装类条件拼接 -->
+  <sql id="Query_InstanceCustom_Where">
+     <if test="instanceCustom != null">
+       <if test="instanceCustom.tacheId != null and instanceCustom.tacheId != ''">
+        and TACHE_ID = #{instanceCustom.tacheId,jdbcType=VARCHAR}
+       </if>
+     </if>
+  </sql>
+  
   <select id="selectByPrimaryKey" resultMap="InstanceMap" parameterType="java.lang.String" >
     select 
     <include refid="Instance_Column_List" />
@@ -30,19 +52,26 @@
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </select>
   
+  <!-- 根据查询VO获取实例列表 -->
+  <select id="listInstanceByVO" resultType="com.zzxy.ssm.po.AcmgTTaskInstanceCustom" parameterType="com.zzxy.ssm.po.AcmgTTaskInstanceQueryVO">
+    select 
+    <include refid="InstanceCustom_Column_List" />
+    from acmg_t_task_instance
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_InstanceCustom_Where"/>
+    </trim>
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from acmg_t_task_instance
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
-    insert into acmg_t_task_instance (INSTANCE_ID, INSTANCE_TYPE, INSTANCE_NAME, 
-      INSTANCE_FLAG, INSTANCE_STATUS, INSTANCE_TIME, 
-      INSTANCE_START_TIME, INSTANCE_END_TIME)
-    values (#{instanceId,jdbcType=VARCHAR}, #{instanceType,jdbcType=VARCHAR}, #{instanceName,jdbcType=VARCHAR}, 
-      #{instanceFlag,jdbcType=VARCHAR}, #{instanceStatus,jdbcType=INTEGER}, #{instanceTime,jdbcType=TIMESTAMP}, 
-      #{instanceStartTime,jdbcType=TIMESTAMP}, #{instanceEndTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
+  
+  <!-- 新增环节实例信息 -->
+  <insert id="insertInstance" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
+    <selectKey keyProperty="instanceId" order="BEFORE" resultType="java.lang.String">
+      select upper(replace(UUID(),'-',''))
+    </selectKey>
     insert into acmg_t_task_instance
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="instanceId != null" >
@@ -68,6 +97,12 @@
       </if>
       <if test="instanceEndTime != null" >
         INSTANCE_END_TIME,
+      </if>
+      <if test="instanceScriptPath != null" >
+        INSTANCE_SCRIPT_PATH,
+      </if>
+      <if test="tacheId != null" >
+        TACHE_ID,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -95,9 +130,17 @@
       <if test="instanceEndTime != null" >
         #{instanceEndTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="instanceScriptPath != null" >
+        #{instanceScriptPath,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheId != null" >
+        #{tacheId,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
+  
+  <!-- 更新环节实例信息 -->
+  <update id="updateInstance" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
     update acmg_t_task_instance
     <set >
       <if test="instanceType != null" >
@@ -121,18 +164,14 @@
       <if test="instanceEndTime != null" >
         INSTANCE_END_TIME = #{instanceEndTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="instanceScriptPath != null" >
+        INSTANCE_SCRIPT_PATH = #{instanceScriptPath,jdbcType=VARCHAR},
+      </if>
+      <if test="tacheId != null" >
+        TACHE_ID = #{tacheId,jdbcType=VARCHAR},
+      </if>
     </set>
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zzxy.ssm.po.AcmgTTaskInstance" >
-    update acmg_t_task_instance
-    set INSTANCE_TYPE = #{instanceType,jdbcType=VARCHAR},
-      INSTANCE_NAME = #{instanceName,jdbcType=VARCHAR},
-      INSTANCE_FLAG = #{instanceFlag,jdbcType=VARCHAR},
-      INSTANCE_STATUS = #{instanceStatus,jdbcType=INTEGER},
-      INSTANCE_TIME = #{instanceTime,jdbcType=TIMESTAMP},
-      INSTANCE_START_TIME = #{instanceStartTime,jdbcType=TIMESTAMP},
-      INSTANCE_END_TIME = #{instanceEndTime,jdbcType=TIMESTAMP}
-    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
-  </update>
+  
 </mapper>

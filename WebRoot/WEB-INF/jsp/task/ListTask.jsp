@@ -112,21 +112,21 @@
                     <tr class="odd gradeX">
                       <td>${task.taskFlag}</td>
                       <td>${task.taskName}</td>
-                      <td><fmt:formatDate value="${ task.taskTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                      <td><fmt:formatDate value="${ task.taskTime }" pattern="yyyy-MM-dd"/></td>
                       <td>${task.taskStatus}</td>
                       <td>${task.completedTasks}/${task.totalTasks}</td>
-                      <td>${task.taskStartTime}</td>
-                      <td>${task.taskEndTime}</td>
+                      <td><fmt:formatDate value="${task.taskStartTime}" pattern="HH:mm:ss"/></td>
+                      <td><fmt:formatDate value="${task.taskEndTime}" pattern="HH:mm:ss"/></td>
                       <td>${task.duration}</td>
                       <td>
                         <a href="${pageContext.request.contextPath }/task/showEditTask.do?taskId=${ task.taskId }">
-                          <i class="fa fa-edit fa-fw"></i>编辑任务
+                          <i class="fa fa-edit fa-fw"></i>编辑
                         </a>
                         <a href="${pageContext.request.contextPath }/task/listTache.do?taskId=${task.taskId}">
-                          <i class="fa fa-plus fa-fw"></i>添加环节
+                          <i class="fa fa-list fa-fw"></i>环节
                         </a>
                         <a href="${pageContext.request.contextPath }/task/deleteTask.do?taskId=${task.taskId}" onclick="return del(this);">
-                          <i class="fa fa-times fa-fw"></i>删除任务
+                          <i class="fa fa-times fa-fw"></i>删除
                         </a>
                       </td>
                     </tr>

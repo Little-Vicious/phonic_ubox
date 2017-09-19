@@ -297,7 +297,9 @@ public class TaskController {
   @RequestMapping("listInstance")
   public ModelAndView listInstance(@RequestParam(value = "tacheId")String tacheId) throws Exception {
     ModelAndView modelAndView = new ModelAndView();
+    List<AcmgTTaskInstanceCustom> instanceCustoms =  taskService.listInstanceByTacheId(tacheId);
     modelAndView.addObject("tacheId", tacheId);
+    modelAndView.addObject("instanceCustoms", instanceCustoms);
     modelAndView.setViewName("/task/instance/ListInstance");
     return modelAndView;
   }
@@ -326,6 +328,38 @@ public class TaskController {
     modelAndView.addObject("instanceCustom", instanceCustom);
     modelAndView.setViewName("/task/instance/EditInstance");
     return modelAndView;
+  }
+  
+  @RequestMapping("submitEditInstance")
+  @ResponseBody
+  public Map<String, Object> submitEditInstance(HttpServletRequest request)throws Exception{
+    Map<String, Object> map = new HashMap<String, Object>();
+    String msg = "";
+    boolean flag = false;
+    
+    
+    AcmgTTaskInstance instance = new AcmgTTaskInstance();
+    instance.setTacheId(request.getParameter("tacheId"));
+    instance.setInstanceId(request.getParameter("instanceId"));
+    instance.setInstanceFlag(request.getParameter("instanceFlag"));
+    instance.setInstanceName(request.getParameter("instanceName"));
+    instance.setInstanceScriptPath(request.getParameter("instanceScriptPath"));
+    instance.setInstanceType(request.getParameter("instanceType"));
+    
+    
+    try{
+      taskService.saveInstance(instance);
+      msg = "删除成功！";
+      flag = true;
+    }catch (Exception e) {
+      e.printStackTrace();
+      msg = e.getMessage();
+    }
+    
+    map.put("msg", msg);
+    map.put("flag", flag);
+    
+    return map;
   }
   
 }

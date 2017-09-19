@@ -60,7 +60,10 @@
         </a>
         <ul class="nav nav-second-level">
           <li>
-            <a href="${pageContext.request.contextPath }/task/listTask.do">批量任务列表</a>
+            <a href="${pageContext.request.contextPath }/task/listTask.do">任务列表</a>
+          </li>
+           <li>
+            <a href="${pageContext.request.contextPath }/dispatch/listDispatch.do">调度列表</a>
           </li>
         </ul>
       </li>

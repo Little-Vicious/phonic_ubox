@@ -1,5 +1,6 @@
 package com.zzxy.ssm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -134,6 +135,53 @@ public class TaskServiceImpl implements TaskService {
     instanceCustom.setInstanceId(instanceId);
     AcmgTTaskInstanceQueryVO queryVO = new AcmgTTaskInstanceQueryVO(null, instanceCustom );
     return instanceMapper.getInstanceByVO(queryVO);
+  }
+
+  /**
+   * 保存实例信息
+   */
+  @Override
+  public void saveInstance(AcmgTTaskInstance instance) {
+    if(StringUtils.isBlank(instance.getInstanceId())) {
+      instance.setInstanceTime(new Date());
+      instanceMapper.insertInstance(instance);
+    }else {
+      instanceMapper.updateInstance(instance);
+    }
+  }
+
+  /**
+   * 根据环节ID获取实例列表
+   */
+  @Override
+  public List<AcmgTTaskInstanceCustom> listInstanceByTacheId(String tacheId) {
+    AcmgTTaskInstanceCustom instanceCustom = new AcmgTTaskInstanceCustom();
+    instanceCustom.setTacheId(tacheId);
+    AcmgTTaskInstanceQueryVO queryVO = new AcmgTTaskInstanceQueryVO(null, instanceCustom );
+    return instanceMapper.listInstanceByVO(queryVO);
+  }
+
+  /**
+   * 根据任务编号，查询环节列表总数
+   */
+  @Override
+  public int totalTacheByTaskId(String taskId) throws Exception {
+    AcmgTTaskTacheCustom taskTacheCustom = new AcmgTTaskTacheCustom();
+    taskTacheCustom.setTaskId(taskId);
+    AcmgTTaskTacheQueryVO queryVO = new AcmgTTaskTacheQueryVO(null, taskTacheCustom );
+    return tacheMapper.countTacheByVO(queryVO);
+  }
+
+  /**
+   * 根据任务编号，查询环节列表完成数
+   */
+  @Override
+  public int countTacheByTaskIdAndStutas(String taskId,int tacheStutas) throws Exception {
+    AcmgTTaskTacheCustom taskTacheCustom = new AcmgTTaskTacheCustom();
+    taskTacheCustom.setTaskId(taskId);
+    taskTacheCustom.setTacheStutas(tacheStutas);
+    AcmgTTaskTacheQueryVO queryVO = new AcmgTTaskTacheQueryVO(null, taskTacheCustom );
+    return tacheMapper.countTacheByVO(queryVO);
   }
 
 }

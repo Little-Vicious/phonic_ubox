@@ -192,4 +192,14 @@
     </set>
     where TACHE_ID = #{tacheId,jdbcType=VARCHAR}
   </update>
+  
+  <!-- 根据查询VO统计任务的环节个数 -->
+  <select id="totalTacheByTaskId" resultType="java.lang.Integer" parameterType="com.zzxy.ssm.po.AcmgTTaskTacheQueryVO">
+    select count(1)
+    from acmg_t_task_tache
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="Query_TacheCustom_Where"/>
+    </trim>
+  </select>
+  
 </mapper>

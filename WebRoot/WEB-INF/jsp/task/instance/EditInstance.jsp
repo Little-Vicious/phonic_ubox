@@ -36,14 +36,14 @@
               <div class="panel-heading">
                 修改环节实例信息
                 <div style="float: right">
-                  <a href="${pageContext.request.contextPath }/task/listTache.do?taskId=${taskId}">
+                  <a href="${pageContext.request.contextPath }/task/listInstance.do?tacheId=${tacheId}">
                     <i class="fa fa-history fa-fw"></i>返回 </a>
                 </div>
               </div>
             </div>
             <div class="panel-body">
               <input type="hidden" id="tacheId" name="tacheId" value="${tacheId }">
-              <input type="hidden" id="tacheId" name="tacheId" value="${tacheCustom.tacheId }">
+              <input type="hidden" id="instanceId" name="instanceId" value="${instanceCustom.instanceId }">
               <table width="100%" class="table table-striped table-bordered table-hover">
                 <tr>
                   <td align="right" width="30%">
@@ -61,7 +61,7 @@
                     实例标识:
                   </td>
                   <td>
-                    <input type="text" id="instanceFlag" name="instanceFlag" class="form-control" value="${tacheCustom.tacheFlag }" >
+                    <input type="text" id="instanceFlag" name="instanceFlag" class="form-control" value="${instanceCustom.instanceFlag }" >
                   </td>
                   <td width="40%" id="taskFlagTip"></td>
                 </tr>
@@ -72,9 +72,19 @@
                     <font color="red">*</font>
                   </td>
                   <td>
-                    <input type="text" id="instanceName" name="instanceName" class="form-control" value="${tacheCustom.tacheName }">
+                    <input type="text" id="instanceName" name="instanceName" class="form-control" value="${instanceCustom.instanceName }">
                   </td>
                   <td width="40%"></td>
+                </tr>
+                <tr>
+                  <td id="scriptPath" align="right">
+                    脚本路径:
+                    <font color="red">*</font>
+                  </td>
+                  <td>
+                    <input type="text" id="instanceScriptPath" name="instanceScriptPath" class="form-control" value="${instanceCustom.instanceScriptPath }">
+                  </td>
+                  <td width="40%">请填写执行的脚本完整路径或者要执行的存储过程名称。</td>
                 </tr>
                 <tr>
                   <td colspan="4" align="center">
@@ -114,38 +124,59 @@
         $(function() {
           initDrop({
             data: [{
-              "selectIds": "tacheType",
-              "typeCode": "tacheType"}]
+              "selectIds": "instanceType",
+              "typeCode": "taskType"}]
             });
+            
+          var select = $("#instanceType");
+          select.change(function(){
+            var selectText = select.find("option:selected").val();
+            if("00070002" == selectText){
+              $("#scriptPath").empty();
+              $("#scriptPath").append("存储名称:<font color='red'>*</font>");
+            }
+          });
 
           $("#saveBtn").click(function() {
-            var taskId = $("#taskId").val();
             var tacheId = $("#tacheId").val();
-            var tacheType = $("#tacheType").val();
-            var tacheFlag = $("#tacheFlag").val();
-            var tacheName = $("#tacheName").val();
+            var instanceId = $("#instanceId").val();
+            var instanceType = $("#instanceType").val();
+            var instanceFlag = $("#instanceFlag").val();
+            var instanceName = $("#instanceName").val();
+            var instanceScriptPath = $("#instanceScriptPath").val();
             
-            if(tacheName == "") {
-              alert("环节名称不能为空!");
-              $("#tacheName").focus();
+            if(instanceName == "") {
+              alert("实例名称不能为空!");
+              $("#instanceName").focus();
+              return false;
+            }
+            
+            if(instanceScriptPath == "") {
+              msg = "脚本路径";
+              if("00070002"==instanceType){
+                msg = "存储名称";
+              }
+              alert(msg+"不能为空!");
+              $("#instanceScriptPath").focus();
               return false;
             }
             
 
             $.ajax({
-              url: getContextPath() + "/task/submitEditTache.do",
+              url: getContextPath() + "/task/submitEditInstance.do",
               type: "POST",
               data: {
-                "taskId": taskId,
                 "tacheId": tacheId,
-                "tacheType": tacheType,
-                "tacheFlag": tacheFlag,
-                "tacheName": tacheName
+                "instanceId": instanceId,
+                "instanceType": instanceType,
+                "instanceFlag": instanceFlag,
+                "instanceName": instanceName,
+                "instanceScriptPath":instanceScriptPath
               },
               dataType:"json",
               success: function(msg) {
                 console.log(JSON.stringify(msg));
-                window.location.href = getContextPath()+"/task/listTache.do?taskId="+taskId;
+                window.location.href = getContextPath()+"/task/listInstance.do?tacheId="+tacheId;
               },
               error: function(er) {
                 console.log(JSON.stringify(er));

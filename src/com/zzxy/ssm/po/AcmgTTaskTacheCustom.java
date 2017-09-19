@@ -1,5 +1,7 @@
 package com.zzxy.ssm.po;
 
+import java.util.List;
+
 import com.zzxy.ssm.common.utils.DateUtils;
 
 public class AcmgTTaskTacheCustom extends AcmgTTaskTache {
@@ -9,6 +11,8 @@ public class AcmgTTaskTacheCustom extends AcmgTTaskTache {
   private int completedTasks;
   
   private long duration;
+  
+  private List<AcmgTTaskInstanceCustom> instanceCustoms;
 
   public AcmgTTaskTacheCustom() {
     super();
@@ -39,6 +43,14 @@ public class AcmgTTaskTacheCustom extends AcmgTTaskTache {
 
   public void setDuration(long duration) {
     this.duration = duration;
+  }
+
+  public List<AcmgTTaskInstanceCustom> getInstanceCustoms() {
+    return instanceCustoms;
+  }
+
+  public void setInstanceCustoms(List<AcmgTTaskInstanceCustom> instanceCustoms) {
+    this.instanceCustoms = instanceCustoms;
   }
   
   

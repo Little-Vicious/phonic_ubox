@@ -114,12 +114,14 @@
       <div id="page-wrapper">
         <div class="panel panel-default">
           <form method="post">
-          <input type="hidden" name="tacheId" id="tacheId" value="${tacheId}">
+          <input type="hidden" name="taskId" id="taskId" value="${taskId}">
             <div class="panel panel-info">
               <div class="panel-heading">
                任务环节列表
                 <div style="float: right">
-                   <a href="${pageContext.request.contextPath }/task/showEditTache.do?tacheId=${ tacheId }">
+                   <a href="${pageContext.request.contextPath }/task/listTache.do?taskId=${ taskId }">
+                   <i class="fa fa-plus fa-fw"></i>返回</a>
+                   <a href="${pageContext.request.contextPath }/task/showEditTache.do?taskId=${ taskId }">
                    <i class="fa fa-plus fa-fw"></i>创建环节</a>
                 </div>
               </div>
@@ -151,13 +153,13 @@
                       <td>${tache.tacheEndTime}</td>
                       <td>${tache.duration}</td>
                       <td>
-                        <a href="${pageContext.request.contextPath }/task/showEditTache.do?tacheId=${ tacheId }&&instanceId=${instance.instanceId}">
+                        <a href="${pageContext.request.contextPath }/task/showEditTache.do?taskId=${ taskId }&&tacheId=${tache.tacheId}">
                           <i class="fa fa-edit fa-fw"></i>编辑
                         </a>
-                        <a href="${pageContext.request.contextPath }/task/listInstance.do?tacheId=${ tacheId }">
-                          <i class="fa fa-plus fa-fw"></i>添加实例
+                        <a href="${pageContext.request.contextPath }/task/listInstance.do?tacheId=${ tache.tacheId }">
+                          <i class="fa fa-list fa-fw"></i>实例
                         </a>
-                        <a href="###" onclick="return del('${instance.instanceId}');">
+                        <a href="###" onclick="return del('${tache.tacheId}');">
                           <i class="fa fa-times fa-fw"></i>删除
                         </a>
                       </td>

@@ -19,6 +19,10 @@ public class AcmgTTaskInstance {
 
     private Date instanceEndTime;
 
+    private String instanceScriptPath;
+
+    private String tacheId;
+
     public String getInstanceId() {
         return instanceId;
     }
@@ -81,5 +85,21 @@ public class AcmgTTaskInstance {
 
     public void setInstanceEndTime(Date instanceEndTime) {
         this.instanceEndTime = instanceEndTime;
+    }
+
+    public String getInstanceScriptPath() {
+        return instanceScriptPath;
+    }
+
+    public void setInstanceScriptPath(String instanceScriptPath) {
+        this.instanceScriptPath = instanceScriptPath == null ? null : instanceScriptPath.trim();
+    }
+
+    public String getTacheId() {
+        return tacheId;
+    }
+
+    public void setTacheId(String tacheId) {
+        this.tacheId = tacheId == null ? null : tacheId.trim();
     }
 }

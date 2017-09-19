@@ -21,15 +21,18 @@
   
   <!-- TaskCustom列表 -->
   <sql id="TaskCustom_Column_List" >
-    TASK_ID as taskId,
-    TASK_TYPE as taskType,
-    TASK_NAME as taskName,
-    TASK_FLAG as taskFlag,
-    TASK_DESCRIPTION as taskDescription,
-    TASK_STATUS as taskStatus,
-    TASK_TIME as taskTime,
-    TASK_START_TIME as taskStartTime,
-    TASK_END_TIME as taskEndTime
+  TASK_ID taskId,
+  TASK_TYPE taskType,
+  TASK_NAME taskName,
+  TASK_FLAG taskFlag,
+  TASK_DESCRIPTION taskDescription,
+  TASK_STATUS taskStatus,
+  TASK_TIME taskTime,
+  TASK_START_TIME taskStartTime,
+  TASK_END_TIME taskEndTime,
+  EXEC_RATE execRate,
+  ( SELECT count( 1 ) FROM acmg_t_task_tache tache WHERE tache.TASK_ID = task.TASK_ID ) totalTasks,
+  ( SELECT count( 1 ) FROM acmg_t_task_tache tache WHERE tache.TASK_ID = task.TASK_ID AND tache.TACHE_STUTAS = 1 ) completedTasks 
   </sql>
   
   <!-- 查询任务条件拼接 -->
@@ -53,7 +56,7 @@
   <select id="listTaskCustomByVO" resultType="com.zzxy.ssm.po.AcmgTTaskCustom" parameterType="com.zzxy.ssm.po.AcmgTTaskQueryVO">
     select 
     <include refid="TaskCustom_Column_List" />
-    from acmg_t_task
+    from acmg_t_task task
     <trim prefix="WHERE" prefixOverrides="AND |OR ">
       <include refid="Query_Task_Where"/>
     </trim>

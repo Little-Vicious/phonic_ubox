@@ -90,4 +90,17 @@ public interface AcmgTTaskTacheMapper {
      */
     int getMaxIndexByTaskId(@Param("taskId")String taskId) throws Exception;
 
+    /**
+     * 根据查询VO统计任务的环节个数
+     * 
+     * @作者： 王文博
+     * @创建日期：2017年9月19日
+     *
+     * @param queryVO
+     * @return int
+     *
+     * @修改记录（修改时间、作者、原因）：
+     */
+    int countTacheByVO(AcmgTTaskTacheQueryVO queryVO);
+
 }
